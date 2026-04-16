@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Modules\Pedido\PedidoService;
 use App\Models\Pedido;
 use App\Models\ItemPedido;
-use JsonResponse;
+use Illuminate\Http\JsonResponse;
 
 class PedidoController extends Controller{
-    /*
+    
     public function __construct(private PedidoService $service){}
 
     public function salvarPedido(Request $request) : JsonResponse{
@@ -19,12 +19,12 @@ class PedidoController extends Controller{
     }
 
     public function deletarPedido(Pedido $pedido) : JsonResponse {
-        $pedido = $this->service->deletarPedido($pedido);
+        $this->service->deletarPedido($pedido);
         return response()->json(['Mensagem' => 'Pedido Removido']);
     }
 
-    public function alterarPedido(Pedido $pedido, int $cliente_id) : ?JsonResponse{
-        $pedido = $this->service->alterarPedido($pedido, $cliente_id);
+    public function alterarPedido(Request $request, Pedido $pedido) : ?JsonResponse{
+        $pedido = $this->service->alterarPedido($pedido, $request->cliente_id);
 
         if($pedido === null){
             return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
@@ -52,7 +52,7 @@ class PedidoController extends Controller{
         return response()->json(['Mensagem' => 'Item Removido']);
     }
 
-    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?JsonResponse
+    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?JsonResponse{
         $itemPedido = $this->service->alterarItemPedido($itemPedido, $quantidade);
 
         if($itemPedido === null){
@@ -60,5 +60,5 @@ class PedidoController extends Controller{
         }
 
         return response()->json($itemPedido);
-    }*/
+    }
 }
