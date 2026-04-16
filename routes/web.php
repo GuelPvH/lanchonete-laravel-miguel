@@ -18,4 +18,8 @@ Route::get('/teste/{nome}', function ($name) {
 
 Route::get('/calcula-idade/{nascimento}/{nome}', [TesteController::class, 'teste']);
 
+<<<<<<< HEAD
 Route::get('/contato/', [ContatoController::class, 'mostrarDataDeHoje'])->name("contato");
+=======
+Route::get('/contato/', [ContatoController::class, 'mostrarDataDeHoje'])->name("contato");
+>>>>>>> ff8a8ab084d655de4dc946811501250188d2a0b3
