@@ -28,9 +28,9 @@ class PedidoService{
     }
 
     public function adicionarItemPedido(array $itens) : ItemPedido{
-        $itemPedido = ItemPedido::FindOrFail($itens['pedido_id']);
+        $pedido = Pedido::findOrFail($itens['pedido_id']);
         
-        return $itemPedido->itens()->create([
+        return $pedido->itens()->create([
             'produto_id' => $itens['produto_id'],
             'quantidade' => $itens['quantidade'],
         ]);

@@ -12,23 +12,53 @@ class ClienteController extends Controller
         $this->service = $service;
     }
 
-    public function salvarCliente(Request $request) : string{
+    public function salvarCliente(Request $request) {
         $cliente = $this->service->adcionarCliente($request->nome);
+        
+        if (!$request->wantsJson()) {
+            session([
+                'cliente_id' => $cliente->id,
+                'nome_cliente' => $cliente->nome,
+                'sobrenome_cliente' => $request->sobrenome
+            ]);
+            return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
+        }
+        
         return response()->json($cliente);
     }
 
-    public function deletarCliente(Cliente $cliente) : string{
+    public function deletarCliente(Cliente $cliente) {
         $this->service->deletarCliente($cliente);
         return response()->json(['Mensagem' => 'Cliente Removido']);
     }
 
-    public function alterarCliente(string $nome, Request $request) : string{
-        $cliente = $this->service->alterarCliente($nome, $request->nome);
+    public function alterarCliente(string $nome, Request $request) {
+        // Correção de bug no parâmetro original (só pro API ficar funcional)
+        $cliente = \App\Models\Cliente::where('nome', $nome)->first();
+        if ($cliente) {
+            $cliente = $this->service->alterarCliente($request->nome, $cliente);
+            return response()->json($cliente);
+        }
+        return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
+    }
 
-        if(!$cliente === null){
-            return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
+    public function atualizarPerfilWeb(Request $request) {
+        $clienteId = session('cliente_id');
+        if (!$clienteId) {
+            return redirect()->route('cliente.index');
         }
 
-        return response()->json($cliente);
+        $cliente = \App\Models\Cliente::find($clienteId);
+        if ($cliente) {
+            $cliente = $this->service->alterarCliente($request->nome, $cliente);
+            session(['nome_cliente' => $cliente->nome]);
+            return redirect()->route('perfil.index')->with('mensagem', 'Perfil atualizado com sucesso!');
+        }
+        return redirect()->route('perfil.index')->with('mensagem', 'Erro ao atualizar perfil.');
+    }
+
+    public function sair(Request $request) {
+        $request->session()->flush();
+        return redirect()->route('cliente.index');
     }
 }

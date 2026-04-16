@@ -33,13 +33,18 @@
 <div class="container">
     @foreach($produtos as $prod)
         <a href="{{ route('produto.show', ['id' => $prod->id ?? $loop->index]) }}" class="product-card" style="text-decoration: none;">
-            <div class="product-info">
+            <div class="product-info"  >
                 <h3 class="product-title">{{ $prod->nome }}</h3>
                 <p class="product-desc small">Lanche Fresquinho</p>
                 <div class="product-price">R$ {{ number_format($prod->preco, 2, ',', '.') }}</div>
             </div>
         </a>
     @endforeach
+    
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+        <a href="{{ route('produto.novo') }}" style="display:inline-block; padding: 10px 20px; background: var(--color-primary); color: white; border-radius: 8px; text-decoration: none; font-weight: bold; border: 1px solid var(--color-primary);">+ Adicionar Novo Produto</a>
+    </div>
+
     <div style="height: 40px;"></div>
 </div>
 @endsection
