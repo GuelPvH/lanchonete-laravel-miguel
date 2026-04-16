@@ -7,8 +7,7 @@ use App\Models\ItemPedido;
 class PedidoService{
 
     public function adicionarPedido(int $cliente_id) : Pedido{
-        $pedido = Pedido::create(['cliente_id' => $cliente_id]);
-        return $pedido;
+        return Pedido::create(['cliente_id' => $cliente_id]);
     }
 
     public function deletarPedido(Pedido $pedido) : void{
@@ -16,15 +15,11 @@ class PedidoService{
     }
     
     public function alterarPedido(Pedido $pedido, int $cliente_id) : ?Pedido{
-        if($pedido === null){
-            return null;
-        }
-        
         $pedido->update(['cliente_id' => $cliente_id]);
         return $pedido;
     }
 
-    public function valorTotal(int $pedido_id) : ?float{
+    public function calcularValorTotal(int $pedido_id) : ?float{
         $pedido = Pedido::with('itens')->find($pedido_id);
         if ($pedido === null) {
             return null;
@@ -33,21 +28,19 @@ class PedidoService{
     }
 
     public function adicionarItemPedido(array $itens) : ItemPedido{
-        $itemPedido = ItemPedido::create(['produto_id' => $itens['produto_id'], 'quantidade' => $itens['qauntidade'], 'pedido_id' => $itens['pedido_id']]);
-        return $itemPedido;
+        $itemPedido = ItemPedido::FindOrFail($itens['pedido_id']);
+        
+        return $itemPedido->itens()->create([
+            'produto_id' => $itens['produto_id'],
+            'quantidade' => $itens['quantidade'],
+        ]);
     }
 
     public function deletarItemPedido(ItemPedido $itemPedido){
         $itemPedido->delete();
     }
 
-    public function alterarItemPedido(int $id, int $quantidade) : ?ItemPedido{
-        $itemPedido = ItemPedido::find($id);
-
-        if($itemPedido === null){
-            return null;
-        }
-        
+    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?ItemPedido{
         $itemPedido->update(['quantidade' => $quantidade]);
         return $itemPedido;
     }

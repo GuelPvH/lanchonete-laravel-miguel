@@ -7,42 +7,58 @@ use Illuminate\Http\Request;
 use App\Modules\Pedido\PedidoService;
 use App\Models\Pedido;
 use App\Models\ItemPedido;
+use JsonResponse;
 
 class PedidoController extends Controller{
+    /*
+    public function __construct(private PedidoService $service){}
 
-    public function __construct(private PedidoService $service){
-        $this->service = $service;
-    }
-
-    public function salvarPedido(Request $request) : string{
-        $pedido = $this->service->adicionarPedido($request->client_id);
+    public function salvarPedido(Request $request) : JsonResponse{
+        $pedido = $this->service->adicionarPedido($request->cliente_id);
         return response()->json($pedido);
     }
 
-    public function deletarPedido(Pedido $pedido) : string {
+    public function deletarPedido(Pedido $pedido) : JsonResponse {
         $pedido = $this->service->deletarPedido($pedido);
         return response()->json(['Mensagem' => 'Pedido Removido']);
     }
 
-    public function alterarPedido(Pedido $pedido, int $cliente_id) : ?string{
+    public function alterarPedido(Pedido $pedido, int $cliente_id) : ?JsonResponse{
         $pedido = $this->service->alterarPedido($pedido, $cliente_id);
 
-        if(!$pedido === null){
+        if($pedido === null){
             return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
         }
 
         return response()->json($pedido);
     }
 
-    public function calcularTotal(Request $request) : string{
-        $pedido = $this->service->valorTotal($request->id);
+    public function calcularTotal(Request $request) : JsonResponse{
+        $pedido = $this->service->calcularValorTotal($request->id);
         return response()->json($pedido);
     }
 
-    public function salvarItemPedido(Request $request) : string{
-        $pedido = $this->service->adicionarItemPedido($request->produto_id, $request->quantidade, $request->pedido_id,);
-        return response()->json($pedido);
+    public function salvarItemPedido(Request $request) : JsonResponse{
+        $itemPedido = $this->service->adicionarItemPedido([
+            $request->produto_id, 
+            $request->quantidade, 
+            $request->pedido_id
+            ]);
+        return response()->json($itemPedido);
     }
-    
-    // Terminar essa merda
+
+    public function deletarItemPedido(ItemPedido $itemPedido) : JsonResponse {
+        $this->service->deletarItemPedido($itemPedido);
+        return response()->json(['Mensagem' => 'Item Removido']);
+    }
+
+    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?JsonResponse
+        $itemPedido = $this->service->alterarItemPedido($itemPedido, $quantidade);
+
+        if($itemPedido === null){
+            return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
+        }
+
+        return response()->json($itemPedido);
+    }*/
 }

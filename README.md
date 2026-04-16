@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 
 =======
@@ -60,3 +61,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 >>>>>>> ff8a8ab084d655de4dc946811501250188d2a0b3
+=======
+# PROJETO LANCHONETE COM LARAVEL - TREINO PARA ENTENDER O FRAMEWORK
+>>>>>>> Stashed changes
