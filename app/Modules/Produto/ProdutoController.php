@@ -14,7 +14,12 @@ class ProdutoController extends Controller{
     }
 
     public function salvarProduto(Request $request){
-        $produto = $this->service->adicionarProduto($request->nome, $request->preco);
+        $preco = str_replace(',', '.', $request->preco);
+        $produto = $this->service->adicionarProduto($request->nome, $preco);
+        
+        if (!$request->wantsJson()) {
+            return redirect()->route('cardapio.index')->with('mensagem', 'Produto adicionado com sucesso!');
+        }
         return response()->json($produto);
     }
 

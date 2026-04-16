@@ -61,7 +61,7 @@
 
     <div class="mt-xl text-center">
         <!-- Assuming they have an explicit logout route, fallback to url -->
-        <p class="small"><a href="{{ url('/logout') }}" style="color: var(--color-text-muted); text-decoration: underline;">Sair do aplicativo</a></p>
+        <p class="small"><a href="{{ route('cliente.sair') }}" style="color: var(--color-text-muted); text-decoration: underline;">Sair do aplicativo</a></p>
     </div>
 </div>
 @endsection
