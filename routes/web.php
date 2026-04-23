@@ -29,23 +29,27 @@ Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'
 // ROTAS DE AUTENTICAÇÃO 
 
 Route::get('/cliente', function () {
-    return view('bem-vindo');
+    return view('autorização.bem-vindo');
 })->name('cliente.index');
 
 Route::get('/login', function () {
-    return view('login');
+    return view('autorização.login');
 })->name('login');
 
 Route::get('/cadastro', function () {
-    return view('cadastro');
+    return view('autorização.cadastro');
 })->name('register');
 
 Route::get('/recuperar-senha', function () {
-    return view('esqueci-senha');
+    return view('autorização.esqueci-senha');
 })->name('password.request');
 
 Route::get('/nova-senha', function () {
-    return view('nova-senha');
+    if (!session()->has('password_reset_cliente_id')) {
+        return redirect()->route('password.request')->with('mensagem', 'Primeiro localize a conta para redefinir a senha.');
+    }
+
+    return view('autorização.nova-senha');
 })->name('password.reset');
 
 
@@ -83,6 +87,8 @@ Route::post('/clientes', [ClienteController::class, 'salvarCliente'])->name('cli
 
 // login real
 Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
+Route::post('/recuperar-senha', [ClienteController::class, 'solicitarRecuperacaoSenha'])->name('password.email');
+Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('password.update');
 
 
 Route::delete('/clientes/{cliente}', [ClienteController::class, 'deletarCliente'])->name('cliente.deletar');

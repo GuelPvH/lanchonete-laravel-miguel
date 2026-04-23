@@ -23,14 +23,14 @@ class ProdutoController extends Controller{
         return response()->json($produto);
     }
 
-    public function deletarCliente(Produto $produto){
-        $produto = $this->service->deletarProduto($produto);
+    public function deletarProduto(Produto $produto){
+        $this->service->deletarProduto($produto);
         return response()->json(['Mensagem' => 'Produto Removido']);
     }
 
     public function alterarProduto(Produto $produto, Request $request){
-        $produto = $this->service->alterarProduto($produto, $request->nome, $request->preco);
-        if(!$produto === null){
+        $produto = $this->service->alterarProduto($produto, $request->only(['nome', 'preco']));
+        if ($produto === null) {
             return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
         }
         return response()->json($produto);

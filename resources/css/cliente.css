@@ -6,7 +6,7 @@
   min-height: 100vh;
   background:
     linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.40)),
-    url('/img/auth-bg.jpg') center center / cover no-repeat;
+    url('/img/fundo.png') center center / cover no-repeat;
 }
 
 /* painel lateral */

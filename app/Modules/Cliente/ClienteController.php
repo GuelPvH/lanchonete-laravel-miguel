@@ -13,9 +13,11 @@ class ClienteController extends Controller
     }
 
     public function salvarCliente(Request $request) {
-        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
+        $numero = $request->numero ?? $request->telefone;
+        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $numero, $request->senha);
         
         if (!$request->wantsJson()) {
+            $request->session()->regenerate();
             session([
                 'cliente_id' => $cliente->id,
                 'nome_cliente' => $cliente->nome,
@@ -23,8 +25,94 @@ class ClienteController extends Controller
             ]);
             return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
         }
-        
+
         return response()->json($cliente);
+    }
+
+    public function login(Request $request) {
+        $cliente = Cliente::where('email', $request->email)->first();
+
+        if (!$cliente || !password_verify($request->senha, $cliente->senha)) {
+            if ($request->wantsJson()) {
+                return response()->json(['mensagem' => 'E-mail ou senha inválidos.'], 401);
+            }
+
+            return back()
+                ->withInput($request->only('email'))
+                ->with('mensagem', 'E-mail ou senha inválidos.');
+        }
+
+        $request->session()->regenerate();
+        session([
+            'cliente_id' => $cliente->id,
+            'nome_cliente' => $cliente->nome,
+            'sobrenome_cliente' => $request->sobrenome
+        ]);
+
+        return redirect()->route('cardapio.index')->with('mensagem', 'Login realizado com sucesso!');
+    }
+
+    public function solicitarRecuperacaoSenha(Request $request) {
+        $cliente = Cliente::where('nome', $request->nome)
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$cliente) {
+            if ($request->wantsJson()) {
+                return response()->json(['mensagem' => 'Conta não encontrada.'], 404);
+            }
+
+            return back()
+                ->withInput($request->only('nome', 'email'))
+                ->with('mensagem', 'Não encontramos uma conta com esses dados.');
+        }
+
+        session(['password_reset_cliente_id' => $cliente->id]);
+
+        if ($request->wantsJson()) {
+            return response()->json(['mensagem' => 'Conta localizada.']);
+        }
+
+        return redirect()
+            ->route('password.reset')
+            ->with('mensagem', 'Conta localizada. Defina a nova senha.');
+    }
+
+    public function redefinirSenha(Request $request) {
+        if ($request->senha !== $request->senha_confirmation) {
+            if ($request->wantsJson()) {
+                return response()->json(['mensagem' => 'As senhas não conferem.'], 422);
+            }
+
+            return back()->with('mensagem', 'As senhas não conferem.');
+        }
+
+        $clienteId = session('password_reset_cliente_id');
+        $cliente = Cliente::find($clienteId);
+
+        if (!$cliente) {
+            if ($request->wantsJson()) {
+                return response()->json(['mensagem' => 'Solicitação de redefinição inválida.'], 404);
+            }
+
+            return redirect()
+                ->route('password.request')
+                ->with('mensagem', 'Solicitação de redefinição inválida. Tente novamente.');
+        }
+
+        $cliente->update([
+            'senha' => password_hash($request->senha, PASSWORD_DEFAULT),
+        ]);
+
+        session()->forget('password_reset_cliente_id');
+
+        if ($request->wantsJson()) {
+            return response()->json(['mensagem' => 'Senha redefinida com sucesso.']);
+        }
+
+        return redirect()
+            ->route('login')
+            ->with('mensagem', 'Senha redefinida com sucesso. Faça login novamente.');
     }
 
     public function deletarCliente(Cliente $cliente) {
@@ -32,14 +120,14 @@ class ClienteController extends Controller
         return response()->json(['Mensagem' => 'Cliente Removido']);
     }
 
-    public function alterarCliente(string $nome, Request $request) {
-        // Correção de bug no parâmetro original (só pro API ficar funcional)
-        $cliente = \App\Models\Cliente::where('nome', $nome)->first();
-        if ($cliente) {
-            $cliente = $this->service->alterarCliente($request->nome, $cliente);
-            return response()->json($cliente);
+    public function alterarCliente(Request $request, Cliente $cliente) {
+        $cliente = $this->service->alterarCliente($request->only(['nome', 'email', 'cpf', 'numero']), $cliente);
+
+        if (!$cliente) {
+            return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
         }
-        return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
+
+        return response()->json($cliente);
     }
 
     public function atualizarPerfilWeb(Request $request) {
@@ -50,8 +138,11 @@ class ClienteController extends Controller
 
         $cliente = \App\Models\Cliente::find($clienteId);
         if ($cliente) {
-            $cliente = $this->service->alterarCliente($request->nome, $cliente);
-            session(['nome_cliente' => $cliente->nome]);
+            $cliente = $this->service->alterarCliente($request->only(['nome']), $cliente);
+            session([
+                'nome_cliente' => $cliente->nome,
+                'sobrenome_cliente' => $request->sobrenome,
+            ]);
             return redirect()->route('perfil.index')->with('mensagem', 'Perfil atualizado com sucesso!');
         }
         return redirect()->route('perfil.index')->with('mensagem', 'Erro ao atualizar perfil.');
