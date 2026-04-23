@@ -29,23 +29,23 @@ Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'
 // ROTAS DE AUTENTICAÇÃO 
 
 Route::get('/cliente', function () {
-    return view('bem-vindo');
+    return view('pagina-inicial/bem-vindo');
 })->name('cliente.index');
 
-Route::get('/login', function () {
-    return view('login');
+Route::post('pagina-inicial/login', function () {
+    return view('pagina-inicial/login');
 })->name('login');
 
 Route::get('/cadastro', function () {
-    return view('cadastro');
+    return view('pagina-inicial/cadastro');
 })->name('register');
 
 Route::get('/recuperar-senha', function () {
-    return view('esqueci-senha');
+    return view('pagina-inicial/esqueci-senha');
 })->name('password.request');
 
 Route::get('/nova-senha', function () {
-    return view('nova-senha');
+    return view('pagina-inicial/nova-senha');
 })->name('password.reset');
 
 

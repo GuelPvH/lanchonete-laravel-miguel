@@ -15,14 +15,14 @@ class ClienteController extends Controller
     public function salvarCliente(Request $request) {
         $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
         
-        if (!$request->wantsJson()) {
+        /* if (!$request->wantsJson()) {
             session([
                 'cliente_id' => $cliente->id,
                 'nome_cliente' => $cliente->nome,
                 'sobrenome_cliente' => $request->sobrenome
             ]);
             return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
-        }
+        } */
         
         return response()->json($cliente);
     }
