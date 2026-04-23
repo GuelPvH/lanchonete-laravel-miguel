@@ -1,0 +1,301 @@
+/* =========================
+   HEADER
+========================= */
+.checkout-header {
+    padding: var(--spacing-md);
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+}
+
+.checkout-title {
+    margin: 0 auto;
+    padding-right: 100px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-btn svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    fill: currentColor;
+}
+
+/* =========================
+   BODY
+========================= */
+body{
+    background-color:var(--color-primary);   
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+/* =========================
+   TITULOS
+========================= */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    margin-top: 0;
+    text-transform: uppercase;
+    color: var(--color-text);
+}
+
+.add-more {
+    display: inline-block;
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: var(--spacing-sm);
+}
+
+/* =========================
+   CARRINHO
+========================= */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.cart-item-img {
+    width: 50px;
+    height: 50px;
+    background: #eee;
+    border-radius: var(--border-radius-sm);
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.cart-item-price {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+/* =========================
+   QUANTIDADE
+========================= */
+.cart-qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.cart-qty-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    border-radius: 4px;
+    font-weight: bold;
+    color: var(--color-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-qty-btn:hover {
+    background-color: rgba(225, 19, 131, 0.08);
+    border-color: var(--color-primary);
+}
+
+/* =========================
+   REMOVER ITEM
+========================= */
+.cart-remove {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+}
+
+/* =========================
+   RADIO CARD
+========================= */
+.radio-card {
+    display: flex;
+    gap: 12px;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.radio-card:hover {
+    border-color: var(--color-primary);
+}
+
+.radio-card input {
+    margin-top: 4px;
+}
+
+/* =========================
+   TEXTO AUXILIAR
+========================= */
+.small {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* =========================
+   PAGAMENTO
+========================= */
+.payment-methods-grid {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.payment-methods-grid.active {
+    display: grid;
+}
+
+.payment-pill {
+    border: 1px solid var(--color-border);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[name="forma_pagamento"] {
+    display: none;
+}
+
+input[name="forma_pagamento"]:checked + .payment-pill {
+    border-color: var(--color-primary);
+    background-color: rgba(225, 19, 131, 0.05);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* =========================
+   BADGE SEGURO
+========================= */
+.secure-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--color-success);
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.secure-badge svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* =========================
+   USUARIO
+========================= */
+.user-info-card {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info-details p {
+    margin-bottom: 4px;
+}
+
+.edit-icon {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* =========================
+   FOOTER FIXO
+========================= */
+.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--color-background);
+    border-top: 1px solid var(--color-border);
+}
+
+.checkout-footer {
+    padding: 16px var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.checkout-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================
+   UTILIDADES
+========================= */
+.separation-line {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: var(--spacing-lg) 0;
+}

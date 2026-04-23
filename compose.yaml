@@ -1,0 +1,25 @@
+services:
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/lanchonete
+    ports:
+      - 8000:8000
+    
+  node:
+    build:
+      context: .
+      dockerfile: vite/Dockerfile
+    volumes:
+      - ./:/lanchonete
+      - ./:/lanchonete/node-modules
+    ports: 
+      - 5173:5173
+    
+
+volumes:
+  lanchonete:
+  node-modules:
+

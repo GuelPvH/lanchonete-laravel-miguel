@@ -1,8 +1,8 @@
-FROM php
+FROM php:8
 
-RUN apt-get updadte
+COPY . .
 
-RUN apt-get install nodejs npm -y
+WORKDIR /lanchonete
 
-RUN npm install vite -y
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 

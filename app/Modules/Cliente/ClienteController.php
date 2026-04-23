@@ -13,7 +13,7 @@ class ClienteController extends Controller
     }
 
     public function salvarCliente(Request $request) {
-        $cliente = $this->service->adcionarCliente($request->nome);
+        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
         
         if (!$request->wantsJson()) {
             session([
