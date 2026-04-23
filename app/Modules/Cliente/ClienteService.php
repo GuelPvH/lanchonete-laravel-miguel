@@ -4,8 +4,15 @@ use App\Models\Cliente;
 
 class ClienteService{
 
-    public function adcionarCliente(string $nome) : Cliente{
-        $cliente = Cliente::create(['nome' => $nome]);
+    public function adcionarCliente(string $nome, string $email, string $cpf, string $numero, string $senha) : Cliente{
+        $cliente = Cliente::create(
+            [
+                'nome' => $nome, 
+                'email' => $email, 
+                'cpf' => $cpf,
+                'numero' => $numero,
+                'senha' => $this->calculaHashDaSenha($senha)
+            ]);
         return $cliente;
     }
 
@@ -13,12 +20,16 @@ class ClienteService{
         $cliente->delete();
     }
 
-    public function alterarCliente(string $nome, Cliente $cliente) : ?Cliente{
+    public function alterarCliente(array $data, Cliente $cliente) : ?Cliente{
         if($cliente === null){
             return null;
         }
         
-        $cliente->update(['nome' => $nome]);
+        $cliente->update($data);
         return $cliente;
+    }
+
+    private function calculaHashDaSenha(string $senha) : string{
+        return password_hash($senha, PASSWORD_DEFAULT);
     }
 }
