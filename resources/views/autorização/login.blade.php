@@ -26,7 +26,13 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('cliente.login') }}" method="POST" class="mt-4">
+                    @if(session('mensagem'))
+                        <div class="alert alert-info mt-3">
+                            {{ session('mensagem') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('login') }}" method="GET" class="mt-4">
                         @csrf
 
                         <div class="mb-3">
