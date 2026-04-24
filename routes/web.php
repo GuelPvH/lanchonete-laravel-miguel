@@ -36,7 +36,7 @@ Route::get('/login', function () {
     return view('autorizacao.login');
 })->name('login');
 
-Route::post('pagina-inicial/login', [ClienteController::class, 'salvarCliente'], 
+Route::post('autorizacao/login', [ClienteController::class, 'salvarCliente'], 
     function(){
         return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
     });
