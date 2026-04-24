@@ -29,19 +29,19 @@ Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'
 // ROTAS DE AUTENTICAÇÃO 
 
 Route::get('/cliente', function () {
-    return view('autorização.bem-vindo');
+    return view('autorizacao.bem-vindo');
 })->name('cliente.index');
 
 Route::get('/login', function () {
-    return view('autorização.login');
+    return view('autorizacao.login');
 })->name('login');
 
 Route::get('/cadastro', function () {
-    return view('autorização.cadastro');
+    return view('autorizacao.cadastro');
 })->name('register');
 
 Route::get('/recuperar-senha', function () {
-    return view('autorização.esqueci-senha');
+    return view('autorizacao.esqueci-senha');
 })->name('password.request');
 
 Route::get('/nova-senha', function () {
@@ -49,7 +49,7 @@ Route::get('/nova-senha', function () {
         return redirect()->route('password.request')->with('mensagem', 'Primeiro localize a conta para redefinir a senha.');
     }
 
-    return view('autorização.nova-senha');
+    return view('autorizacao.nova-senha');
 })->name('password.reset');
 
 
