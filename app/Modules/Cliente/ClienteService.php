@@ -22,7 +22,7 @@ class ClienteService{
 
     public function alterarCliente(array $data, Cliente $cliente) : ?Cliente{
         if($cliente === null){
-            return null;
+            return null;   
         }
         
         $cliente->update($data);

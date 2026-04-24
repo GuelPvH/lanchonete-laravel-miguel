@@ -3,8 +3,6 @@
 @section('titulo', 'Meu Pedido')
 
 @section('estilos')
-    @vite(['resources/css/pedidoStyle.css'])
-    @vite(['resources/css/cliente.css'])
 @endsection
 
 @section('header')

@@ -15,7 +15,7 @@ class ProdutoService{
     }
     
     public function alterarProduto(Produto $produto, array $dados) : ?Produto{
-        if(!$produto == null){
+        if ($produto === null) {
             return null;
         }
         

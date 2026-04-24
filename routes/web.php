@@ -29,11 +29,11 @@ Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'
 // ROTAS DE AUTENTICAÇÃO 
 
 Route::get('/cliente', function () {
-    return view('pagina-inicial/bem-vindo');
+    return view('autorizacao.bem-vindo');
 })->name('cliente.index');
 
-Route::get('pagina-inicial/login', function () {
-    return view('pagina-inicial/login');
+Route::get('/login', function () {
+    return view('autorizacao.login');
 })->name('login');
 
 Route::post('pagina-inicial/login', [ClienteController::class, 'salvarCliente'], 
@@ -42,15 +42,19 @@ Route::post('pagina-inicial/login', [ClienteController::class, 'salvarCliente'],
     });
 
 Route::get('/cadastro', function () {
-    return view('pagina-inicial/cadastro');
+    return view('autorizacao.cadastro');
 })->name('register');
 
 Route::get('/recuperar-senha', function () {
-    return view('pagina-inicial/esqueci-senha');
+    return view('autorizacao.esqueci-senha');
 })->name('password.request');
 
 Route::get('/nova-senha', function () {
-    return view('pagina-inicial/nova-senha');
+    if (!session()->has('password_reset_cliente_id')) {
+        return redirect()->route('password.request')->with('mensagem', 'Primeiro localize a conta para redefinir a senha.');
+    }
+
+    return view('autorizacao.nova-senha');
 })->name('password.reset');
 
 
@@ -85,6 +89,11 @@ Route::get('/logout', [ClienteController::class, 'sair'])->name('cliente.sair');
 
 // cadastro
 Route::post('/clientes', [ClienteController::class, 'salvarCliente'])->name('cliente.salvar');
+
+// login real
+Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
+Route::post('/recuperar-senha', [ClienteController::class, 'solicitarRecuperacaoSenha'])->name('password.email');
+Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('password.update');
 
 
 Route::delete('/clientes/{cliente}', [ClienteController::class, 'deletarCliente'])->name('cliente.deletar');
