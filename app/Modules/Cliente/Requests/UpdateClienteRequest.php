@@ -1,10 +1,11 @@
 <?php
-namespace App\Modules\Cliente;
-use App\Http\Requests;
+
+namespace App\Http\Requests;
+
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreClienteRequest extends FormRequest
+class UpdateClienteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +23,7 @@ class StoreClienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=> ['required'],
-            'senha' => ['required']
+            //
         ];
     }
 }

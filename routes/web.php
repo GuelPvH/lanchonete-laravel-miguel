@@ -32,9 +32,14 @@ Route::get('/cliente', function () {
     return view('pagina-inicial/bem-vindo');
 })->name('cliente.index');
 
-Route::post('pagina-inicial/login', function () {
+Route::get('pagina-inicial/login', function () {
     return view('pagina-inicial/login');
 })->name('login');
+
+Route::post('pagina-inicial/login', [ClienteController::class, 'salvarCliente'], 
+    function(){
+        return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
+    });
 
 Route::get('/cadastro', function () {
     return view('pagina-inicial/cadastro');
@@ -80,9 +85,6 @@ Route::get('/logout', [ClienteController::class, 'sair'])->name('cliente.sair');
 
 // cadastro
 Route::post('/clientes', [ClienteController::class, 'salvarCliente'])->name('cliente.salvar');
-
-// login real
-Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
 
 
 Route::delete('/clientes/{cliente}', [ClienteController::class, 'deletarCliente'])->name('cliente.deletar');

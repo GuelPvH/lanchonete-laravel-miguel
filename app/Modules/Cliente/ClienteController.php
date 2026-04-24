@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Modules\Cliente\ClienteService;
 use App\Models\Cliente;
+use Illuminate\Http\RedirectResponse;
+use App\Modules\Cliente\StoreClienteRequest;
 
 class ClienteController extends Controller
 {
@@ -12,8 +14,8 @@ class ClienteController extends Controller
         $this->service = $service;
     }
 
-    public function salvarCliente(Request $request) {
-        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
+    public function salvarCliente(StoreClienteRequest $request) : RedirectResponse {
+        //$cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
         
         /* if (!$request->wantsJson()) {
             session([
@@ -24,7 +26,10 @@ class ClienteController extends Controller
             return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
         } */
         
-        return response()->json($cliente);
+        //return response()->json($cliente);
+        //dd($request->all());
+        $validated = $request->validated();
+        return redirect('cliente.index');
     }
 
     public function deletarCliente(Cliente $cliente) {

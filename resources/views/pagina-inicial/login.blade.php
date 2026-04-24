@@ -20,7 +20,7 @@
 
                     <h1 class="auth-form-title">SEJA BEM-VINDO DE VOLTA</h1>
 
-                    <form action="{{ route('cliente.login') }}" method="POST" class="mt-4">
+                    <form action="{{ route('login') }}" method="GET" class="mt-4">
                         @csrf
 
                         <div class="mb-3">
