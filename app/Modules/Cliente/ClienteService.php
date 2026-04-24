@@ -4,8 +4,9 @@ use App\Models\Cliente;
 
 class ClienteService{
 
-    public function adcionarCliente(string $nome, string $email, string $cpf, ?string $numero, string $senha) : Cliente{
-        $cliente = Cliente::create(
+    public function adcionarCliente(string $nome, string $email, string $cpf, string $numero, string $senha) : Cliente{
+      
+    $cliente = Cliente::create(
             [
                 'nome' => $nome, 
                 'email' => $email, 

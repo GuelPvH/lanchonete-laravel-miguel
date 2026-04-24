@@ -25,7 +25,10 @@ class StoreClienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=> ['required'],
+            'nome' => ['required'],
+            'cpf' => ['required'],
+            'numero' => ['required'],
+            'email' => ['required'],
             'senha' => [Password::defaults()]
         ];
     }

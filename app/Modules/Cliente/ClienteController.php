@@ -15,8 +15,8 @@ class ClienteController extends Controller
     }
 
     public function salvarCliente(Request $request) {
-        $numero = $request->numero ?? $request->telefone;
-        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $numero, $request->senha);
+        //dd($request->all());
+        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
         
         /* if (!$request->wantsJson()) {
             session([
@@ -29,7 +29,7 @@ class ClienteController extends Controller
         
         //return response()->json($cliente);
         //dd($request->all());
-        $validated = $request->validated();
+        $request->validated();
         return redirect('cliente.index');
     }
 
