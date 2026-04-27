@@ -32,14 +32,11 @@ Route::get('/cliente', function () {
     return view('autorizacao.bem-vindo');
 })->name('cliente.index');
 
-Route::get('/login', function () {
+Route::get('autorizacao/login', function () {
     return view('autorizacao.login');
-})->name('login');
+})->name('autorizacao.login');
 
-Route::post('autorizacao/login', [ClienteController::class, 'salvarCliente'], 
-    function(){
-        return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
-    });
+Route::post('autorizacao/login', [ClienteController::class, 'login'])->name('cliente.login');
 
 Route::get('/cadastro', function () {
     return view('autorizacao.cadastro');
@@ -91,7 +88,7 @@ Route::get('/logout', [ClienteController::class, 'sair'])->name('cliente.sair');
 Route::post('/clientes', [ClienteController::class, 'salvarCliente'])->name('cliente.salvar');
 
 // login real
-Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
+//Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
 Route::post('/recuperar-senha', [ClienteController::class, 'solicitarRecuperacaoSenha'])->name('password.email');
 Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('password.update');
 

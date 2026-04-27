@@ -39,14 +39,14 @@
                     </div>
 
                     <div class="auth-field">
-                        <label for="telefone" class="auth-label">TELEFONE</label>
+                        <label for="numero" class="auth-label">TELEFONE</label>
                         <input
                             type="text"
-                            id="telefone"
-                            name="telefone"
+                            id="numero"
+                            name="numero"
                             class="form-control auth-input"
                             placeholder="Digite o seu número de telefone"
-                            value="{{ old('telefone') }}"
+                            value="{{ old('numero') }}"
                             required
                         >
                     </div>

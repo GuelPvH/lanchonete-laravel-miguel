@@ -3,7 +3,10 @@ namespace App\Modules\Cliente;
 use App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
+//[RedirectToRoute('cardapio.index')]
 class StoreClienteRequest extends FormRequest
 {
     /**
@@ -11,7 +14,7 @@ class StoreClienteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +25,11 @@ class StoreClienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=> ['required'],
-            'senha' => ['required']
+            'nome' => ['required'],
+            'cpf' => ['required'],
+            'numero' => ['required'],
+            'email' => ['required'],
+            'senha' => [Password::defaults()]
         ];
     }
 }

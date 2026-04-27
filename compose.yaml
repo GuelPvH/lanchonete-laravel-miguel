@@ -11,7 +11,7 @@ services:
   node:
     build:
       context: .
-      dockerfile: vite/Dockerfile
+      dockerfile: container_vite/Dockerfile
     volumes:
       - ./:/lanchonete
       - ./:/lanchonete/node-modules
