@@ -16,7 +16,14 @@ class ClienteController extends Controller
 
     public function salvarCliente(Request $request) {
         //dd($request->all());
-        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $request->numero, $request->senha);
+        $cliente = $this->service->adcionarCliente(
+            $request->nome, 
+            $request->email, 
+            $request->cpf, 
+            $request->numero, 
+            $request->senha
+            );
+         return redirect()->route('cliente.index')->with('mensagem', 'Cadastro realizado com sucesso! Faça login para continuar.');
         
         /* if (!$request->wantsJson()) {
             session([
@@ -115,7 +122,7 @@ class ClienteController extends Controller
         }
 
         return redirect()
-            ->route('login')
+            ->route('autorizacao.login')
             ->with('mensagem', 'Senha redefinida com sucesso. Faça login novamente.');
     }
 
