@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('site.layout')
 
 @section('titulo', 'Meu Pedido')
 
@@ -71,7 +71,7 @@
     <form id="form-checkout">
         <hr class="separation-line my-4">
 
-        <h3 class="section-title">Retirada</h3>
+       <!--  <h3 class="section-title">Retirada</h3>
         <div class="mb-4">
             <label class="radio-card d-block mb-2">
                 <input type="radio" name="modalidade" value="mesa" onchange="toggleModalidade()">
@@ -88,7 +88,7 @@
                     <div class="small text-muted">Pronto em cerca de 20 min</div>
                 </div>
             </label>
-        </div>
+        </div> -->
 
         <h3 class="section-title">Pagamento</h3>
 
@@ -144,12 +144,6 @@
     @if(session('carrinho'))
     <div class="checkout-footer p-3 shadow-lg bg-white border-top">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="fw-bold text-uppercase">Total</span>
-                <span class="h4 mb-0 fw-bold text-pink">
-                    R$ {{ number_format($total ?? 0, 2, ',', '.') }}
-                </span>
-            </div>
 
             <button id="btn-finalizar" class="btn btn-primary w-100 py-3 fw-bold rounded-pill">
                 FINALIZAR PEDIDO

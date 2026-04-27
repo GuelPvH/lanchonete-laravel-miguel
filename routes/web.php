@@ -5,34 +5,37 @@ use App\Modules\Cliente\ClienteController;
 use App\Modules\Pedido\PedidoController;
 use Illuminate\Support\Facades\Route;
 
-// VIEWS PRINCIPAIS
+// ROTAS RELACIONADAS AO CLIENTE
 
 Route::get('/', function () {
-    return view('bem-vindo');
+    return view('site/bem-vindo');
 })->name('bemvindo.index');
 
 Route::get('/cardapio', function () {
-    return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
+    return view('site/cardapio', ['produtos' => \App\Models\Produto::all()]);
 })->name('cardapio.index');
 
-Route::get('/produto', function () {
-    return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
-})->name('produto.index');
-
-Route::get('/produto/{id}', function ($id) {
-    return view('produto', ['produto' => \App\Models\Produto::find($id)]);
-})->name('produto.show');
-
 Route::get('/pedido', function () {
-    return view('pedido', ['total' => session('carrinhoTotal', 0)]);
+    return view('site/pedido', ['total' => session('carrinhoTotal', 0)]);
 })->name('pedido.ver');
 
+Route::post('/pagamento', [PedidoController::class, 'calcularTotal'])->name('pagamento.index');
+
+Route::get('/produto/{id}', function ($id) {
+    return view('site/produto', ['produto' => \App\Models\Produto::find($id)]);
+})->name('produto.show');
+
+
+
 Route::get('/perfil', function () {
-    return view('perfil');
+    return view('site/perfil');
 })->name('perfil.index');
 
 Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'])->name('perfil.atualizar');
 
+Route::get('/pagamento/', function(){
+    return view('site/pagamento');
+})->name('pagamento.index');
 
 // ROTAS DE AUTENTICAÇÃO 
 
@@ -89,6 +92,11 @@ Route::get('/produtos/novo', function () {
 Route::post('/produtos', [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
 Route::delete('/produtos/{produto}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
 Route::put('/produtos/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
+Route::get('/produto', function () {
+    return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
+})->name('produto.index');
+
+
 
 
 // ROTAS CLIENTE 

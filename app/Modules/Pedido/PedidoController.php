@@ -33,9 +33,11 @@ class PedidoController extends Controller{
         return response()->json($pedido);
     }
 
-    public function calcularTotal(Request $request) : JsonResponse{
-        $pedido = $this->service->calcularValorTotal($request->id);
-        return response()->json($pedido);
+    public function calcularTotal(Request $request){
+        $id = $request->id;
+        $pedido = Pedido::find($id);
+        $total = $this->service->calcularValorTotal($id);
+        return view('pedido.total', compact('total'));
     }
 
     public function salvarItemPedido(Request $request) {
