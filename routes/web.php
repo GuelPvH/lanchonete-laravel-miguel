@@ -8,8 +8,16 @@ use Illuminate\Support\Facades\Route;
 // VIEWS PRINCIPAIS
 
 Route::get('/', function () {
+    return view('bem-vindo');
+})->name('bemvindo.index');
+
+Route::get('/cardapio', function () {
     return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
 })->name('cardapio.index');
+
+Route::get('/produto', function () {
+    return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
+})->name('produto.index');
 
 Route::get('/produto/{id}', function ($id) {
     return view('produto', ['produto' => \App\Models\Produto::find($id)]);
@@ -29,8 +37,8 @@ Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'
 // ROTAS DE AUTENTICAÇÃO 
 
 Route::get('/cliente', function () {
-    return view('autorizacao.bem-vindo');
-})->name('cliente.index');
+    return view('cardapio',  ['produtos' => \App\Models\Produto::all()]);
+})->name('cliente.index'); 
 
 Route::get('autorizacao/login', function () {
     return view('autorizacao.login');
@@ -39,6 +47,10 @@ Route::get('autorizacao/login', function () {
 Route::post('autorizacao/login', [ClienteController::class, 'login'])->name('cliente.login');
 
 Route::get('/cadastro', function () {
+    return view('autorizacao.cadastro');
+})->name('register');
+
+Route::post('/cadastro', [ClienteController::class, 'adicionarCliente'], function () {
     return view('autorizacao.cadastro');
 })->name('register');
 

@@ -11,15 +11,15 @@ services:
   node:
     build:
       context: .
-      dockerfile: container_vite/Dockerfile
+      dockerfile: Dockerfile.vite
     volumes:
       - ./:/lanchonete
-      - ./:/lanchonete/node-modules
+      - ./node_modules/:/lanchonete/node_modules
     ports: 
       - 5173:5173
     
 
 volumes:
   lanchonete:
-  node-modules:
+  node_modules:
 

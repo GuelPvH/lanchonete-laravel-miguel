@@ -23,7 +23,7 @@ class ClienteController extends Controller
             $request->numero, 
             $request->senha
             );
-         return redirect()->route('cliente.index')->with('mensagem', 'Cadastro realizado com sucesso! Faça login para continuar.');
+        return redirect()->route('autorizacao.login');
         
         /* if (!$request->wantsJson()) {
             session([
@@ -36,8 +36,8 @@ class ClienteController extends Controller
         
         //return response()->json($cliente);
         //dd($request->all());
-        $request->validated();
-        return redirect('cliente.index');
+        //$request->validated();
+        //return view('clientes');
     }
 
     public function login(Request $request) {
@@ -60,7 +60,7 @@ class ClienteController extends Controller
             'sobrenome_cliente' => $request->sobrenome
         ]);
 
-        return redirect()->route('cardapio.index')->with('mensagem', 'Login realizado com sucesso!');
+        return redirect()->route('cliente.index')->with('mensagem', 'Login realizado com sucesso!');
     }
 
     public function solicitarRecuperacaoSenha(Request $request) {

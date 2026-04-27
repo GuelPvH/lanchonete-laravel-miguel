@@ -41,13 +41,13 @@
         </a>
     @endforeach
     
-    <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+   <!--  <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
         <a href="{{ route('produto.novo') }}" style="display:inline-block; padding: 10px 20px; background: var(--color-primary); color: white; border-radius: 8px; text-decoration: none; font-weight: bold; border: 1px solid var(--color-primary);">+ Adicionar Novo Produto</a>
-    </div>
+    </div> -->
 
     <div style="height: 40px;"></div>
 </div>
-@endsection
+@endsection 
 
 @section('footer')
 <div class="sticky-footer">
