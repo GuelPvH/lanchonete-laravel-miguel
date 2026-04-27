@@ -1,9 +1,19 @@
-# Chat cliente restaurante -> websockets 
+# Luca
 
-# Acompahamento do pedido -> Ajax -> Modal ()
+## Chat cliente restaurante -> websockets 
 
-# Metodo de Pagamento 
+## Acompahamento do pedido -> Ajax -> Modal ()
 
+## Validations 
+
+## Midleware
+
+## Metodo de Pagamento 
 > Tirar calculo do pagamento do front-end 
 > Fazer a requisição para pegar o valor do Controller 
 > Mostrar na tela de pagamento
+> Integrar com a abacate pay 
+
+-------------------------------------------------------------------------------------------------------
+
+# Miguel 
