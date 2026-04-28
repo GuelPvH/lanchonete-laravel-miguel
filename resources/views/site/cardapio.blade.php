@@ -32,7 +32,7 @@
 @section('conteudo')
 <div class="container">
     @foreach($produtos as $prod)
-        <a href="{{ route('produto.show', ['id' => $prod->id ?? $loop->index]) }}" class="product-card" style="text-decoration: none;">
+        <a href="{{ route('produto.show.id', ['id' => $prod->id ?? $loop->index]) }}" class="product-card" style="text-decoration: none;">
             <div class="product-info"  >
                 <h3 class="product-title">{{ $prod->nome }}</h3>
                 <p class="product-desc small">Lanche Fresquinho</p>

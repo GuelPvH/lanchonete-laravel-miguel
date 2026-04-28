@@ -69,13 +69,21 @@ Route::get('/nova-senha', function () {
 // ROTAS PEDIDOS
 
 Route::post('/pedidos', [PedidoController::class, 'salvarPedido'])->name('pedido.salvar');
+
 Route::delete('/pedidos/{pedido}', [PedidoController::class, 'deletarPedido'])->name('pedido.deletar');
+
 Route::put('/pedidos/{pedido}', [PedidoController::class, 'alterarPedido'])->name('pedido.alterar');
+
 Route::get('/pedidos/{id}/total', [PedidoController::class, 'calcularTotal'])->name('pedido.total');
-Route::post('/pedidos/adicionar', [PedidoController::class, 'salvarItemPedido'])->name('pedido.adicionar');
+
+Route::post('/pedido/adicionar', [PedidoController::class, 'salvarItemPedido'])->name('pedido.adicionar');
+
 Route::post('/pedido/remover-unidade/{id}', [PedidoController::class, 'removerUnidade']);
+
 Route::post('/pedido/adicionar-unidade/{id}', [PedidoController::class, 'adicionarUnidade']);
+
 Route::post('/pedido/remover-tudo/{id}', [PedidoController::class, 'removerTudo']);
+
 Route::post('/pedidos/finalizar', [PedidoController::class, 'salvarPedido'])->name('pedido.finalizar');
 
 
@@ -96,8 +104,10 @@ Route::get('/produto', function () {
 })->name('produto.show');
 
 Route::get('/produto/{id}', function ($id) {
-    return view('site/produto', ['produto' => \App\Models\Produto::findOrFail($id)]);
-})->name('produto.show');
+    return view('site/produto', ['produto' => \App\Models\Produto::find($id)]);
+})->name('produto.show.id');
+
+
 
 
 

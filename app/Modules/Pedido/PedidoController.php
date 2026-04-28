@@ -47,7 +47,7 @@ class PedidoController extends Controller{
         if (!$pedido_id) {
             $clienteId = session('cliente_id');
             if (!$clienteId) {
-                if (!$request->wantsJson()) return redirect()->route('cliente.index');
+                if (!$request->wantsJson()) return redirect()->route('cardapio.index');
                 return response()->json(['Mensagem' => 'Nenhum cliente na sessão'], 401);
             }
             $pedido = $this->service->adicionarPedido($clienteId);
