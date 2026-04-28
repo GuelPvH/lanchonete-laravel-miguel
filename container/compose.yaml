@@ -1,0 +1,37 @@
+services:
+  laravel-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev.php
+    volumes:
+      - ../:/lanchonete
+    ports:
+      - 3000:8000
+    profiles: ["dev"]
+    
+  vite-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev.vite
+    working_dir: /lanchonete
+    volumes:
+      - ../.:/lanchonete
+      - ../node_modules:/lanchonete/node_modules
+    ports: 
+      - 5173:5173
+    command: npm run dev
+    profiles: ["dev"]
+
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    profiles: ["prod"]
+
+volumes:
+  node_modules:
+
+
+
