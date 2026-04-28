@@ -35,4 +35,13 @@ class ProdutoController extends Controller{
         }
         return response()->json($produto);
     }
+
+    public function listarProdutos(){
+        return $this->service->listarProduto();
+    }
+
+    public function listarProdutoById(int $id){
+        $produto = Produto::findOrFail($id);
+        return view('site/produto', compact('produto'));
+    }
 }

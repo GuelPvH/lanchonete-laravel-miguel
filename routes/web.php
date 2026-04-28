@@ -100,16 +100,10 @@ Route::delete('/produto/{id}', [ProdutoController::class, 'deletarProduto'])->na
 Route::put('/produto/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
 
 Route::get('/produto', function () {
-    return view('site/cardapio', ['produtos' => \App\Models\Produto::all()]);
+    return view('site/cardapio', [ProdutoController::class, 'listarProduto']);
 })->name('produto.show');
 
-Route::get('/produto/{id}', function ($id) {
-    return view('site/produto', ['produto' => \App\Models\Produto::find($id)]);
-})->name('produto.show.id');
-
-
-
-
+Route::get('/produto/{id}', [ProdutoController::class, 'listarProdutoById'])->name('produto.show.id');
 
 
 // ROTAS CLIENTE 
