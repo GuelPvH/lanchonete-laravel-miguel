@@ -18,9 +18,16 @@ class PedidoController extends Controller{
         return response()->json($pedido);
     }
 
-    public function deletarPedido(Pedido $pedido) : JsonResponse {
-        $this->service->deletarPedido($pedido);
-        return response()->json(['Mensagem' => 'Pedido Removido']);
+    public function deletarPedido(int $id){
+        $this->service->deletarItemsPedidoDePedido($id);
+        $this->service->deletarPedido($id);
+        $this->destroy();
+        return redirect()->route('cardapio.index');
+    }
+
+    public function destroy(){
+        session()->forget('carrinho');
+        session()->forget('carrinhoCount');
     }
 
     public function alterarPedido(Request $request, Pedido $pedido) : ?JsonResponse{

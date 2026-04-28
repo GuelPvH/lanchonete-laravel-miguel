@@ -143,14 +143,28 @@
 <footer class="mt-auto py-3">
     @if(session('carrinho'))
     <div class="checkout-footer p-3 shadow-lg bg-white border-top">
-        <div class="container">
-            <form action="{{ route('pagamento.index') }}" method="POST">
+        <div class="container d-flex justify-content-center gap-3">
+
+            <form action="{{ route('pedido.deletar', $id) }}" method="POST" class="w-50">
                 @csrf
-                <input type="hidden" id="id" name="id" class="form-control auth-input" value="{{ old('id') }}">
-                <button id="btn-finalizar" class="btn btn-primary w-100 py-3 fw-bold rounded-pill">
+                @method('DELETE')
+
+                <input type="hidden" name="id" value="{{ $id }}">
+
+                <button class="btn btn-danger w-100 py-4 fw-bold rounded-pill">
+                    CANCELAR PEDIDO
+                </button>
+            </form>
+
+            <form action="{{ route('pagamento.index') }}" method="POST" class="w-50">
+                @csrf
+                <input type="hidden" name="id" value="{{ old('id') }}">
+
+                <button class="btn btn-primary w-100 py-4 fw-bold rounded-pill">
                     FINALIZAR PEDIDO
                 </button>
             </form>
+
         </div>
     </div>
     @else

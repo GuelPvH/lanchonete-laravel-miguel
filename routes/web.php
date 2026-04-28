@@ -67,10 +67,13 @@ Route::get('/nova-senha', function () {
 
 
 // ROTAS PEDIDOS
+Route::get('/pedidos', function() {
+    return view('site/pedido');
+})->name('pedido.index');
 
 Route::post('/pedidos', [PedidoController::class, 'salvarPedido'])->name('pedido.salvar');
 
-Route::delete('/pedidos/{pedido}', [PedidoController::class, 'deletarPedido'])->name('pedido.deletar');
+Route::delete('/pedidos/{id}', [PedidoController::class, 'deletarPedido'])->name('pedido.deletar');
 
 Route::put('/pedidos/{pedido}', [PedidoController::class, 'alterarPedido'])->name('pedido.alterar');
 
