@@ -21,11 +21,11 @@ class PedidoController extends Controller{
     public function deletarPedido(int $id){
         $this->service->deletarItemsPedidoDePedido($id);
         $this->service->deletarPedido($id);
-        $this->destroy();
+        $this->destroiSessaoCarrinho();
         return redirect()->route('cardapio.index');
     }
 
-    public function destroy(){
+    public function destroiSessaoCarrinho(){
         session()->forget('carrinho');
         session()->forget('carrinhoCount');
     }
