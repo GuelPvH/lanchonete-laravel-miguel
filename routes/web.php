@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Route;
 // ROTAS RELACIONADAS AO CLIENTE
 
 Route::get('/', function () {
-    return view('site/bem-vindo');
+    return view('/site/bem-vindo');
 })->name('bemvindo.index');
 
 Route::get('/cardapio', function () {
-    return view('site/cardapio', ['produtos' => \App\Models\Produto::all()]);
+    return view('/site/cardapio', ['produtos' => \App\Models\Produto::all()]);
 })->name('cardapio.index');
 
 Route::get('/pedido', function () {
@@ -21,9 +21,9 @@ Route::get('/pedido', function () {
 
 Route::post('/pagamento', [PedidoController::class, 'calcularTotal'])->name('pagamento.index');
 
-Route::get('/produto/{id}', function ($id) {
-    return view('site/produto', ['produto' => \App\Models\Produto::find($id)]);
-})->name('produto.show');
+/* Route::get('/cliente', function () {
+    return view('site/cardapio',  ['produtos' => \App\Models\Produto::all()]);
+})->name('cliente.index'); */ 
 
 
 
@@ -39,10 +39,6 @@ Route::get('/pagamento/', function(){
 
 // ROTAS DE AUTENTICAÇÃO 
 
-Route::get('/cliente', function () {
-    return view('cardapio',  ['produtos' => \App\Models\Produto::all()]);
-})->name('cliente.index'); 
-
 Route::get('autorizacao/login', function () {
     return view('autorizacao.login');
 })->name('autorizacao.login');
@@ -53,9 +49,9 @@ Route::get('/cadastro', function () {
     return view('autorizacao.cadastro');
 })->name('register');
 
-Route::post('/cadastro', [ClienteController::class, 'adicionarCliente'], function () {
+/* Route::post('/cadastro', [ClienteController::class, 'adicionarCliente'], function () {
     return view('autorizacao.cadastro');
-})->name('register');
+})->name('register'); */
 
 Route::get('/recuperar-senha', function () {
     return view('autorizacao.esqueci-senha');
@@ -85,16 +81,23 @@ Route::post('/pedidos/finalizar', [PedidoController::class, 'salvarPedido'])->na
 
 // ROTAS PRODUTOS
 
-Route::get('/produtos/novo', function () {
-    return view('produto_novo');
-})->name('produto.novo');
-
-Route::post('/produtos', [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
-Route::delete('/produtos/{produto}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
-Route::put('/produtos/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
-Route::get('/produto', function () {
+Route::get('/produto/novo', function () {
     return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
 })->name('produto.index');
+
+Route::post('/produto/novo',  [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
+
+Route::delete('/produto/{id}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
+
+Route::put('/produto/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
+
+Route::get('/produto', function () {
+    return view('site/cardapio', ['produtos' => \App\Models\Produto::all()]);
+})->name('produto.show');
+
+Route::get('/produto/{id}', function ($id) {
+    return view('site/produto', ['produto' => \App\Models\Produto::findOrFail($id)]);
+})->name('produto.show');
 
 
 

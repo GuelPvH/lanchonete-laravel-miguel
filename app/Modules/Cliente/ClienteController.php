@@ -60,7 +60,7 @@ class ClienteController extends Controller
             'sobrenome_cliente' => $request->sobrenome
         ]);
 
-        return redirect()->route('cliente.index')->with('mensagem', 'Login realizado com sucesso!');
+        return redirect()->route('cardapio.index');
     }
 
     public function solicitarRecuperacaoSenha(Request $request) {

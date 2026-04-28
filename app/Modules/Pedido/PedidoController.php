@@ -32,8 +32,9 @@ class PedidoController extends Controller{
 
         return response()->json($pedido);
     }
-
+    
     public function calcularTotal(Request $request){
+        dd($request->all());
         $id = $request->id;
         $pedido = Pedido::find($id);
         $total = $this->service->calcularValorTotal($id);

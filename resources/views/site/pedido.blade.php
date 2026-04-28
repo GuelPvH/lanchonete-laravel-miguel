@@ -144,10 +144,13 @@
     @if(session('carrinho'))
     <div class="checkout-footer p-3 shadow-lg bg-white border-top">
         <div class="container">
-
-            <button id="btn-finalizar" class="btn btn-primary w-100 py-3 fw-bold rounded-pill">
-                FINALIZAR PEDIDO
-            </button>
+            <form action="{{ route('pagamento.index') }}" method="POST">
+                @csrf
+                <input type="hidden" id="id" name="id" class="form-control auth-input" value="{{ old('id') }}">
+                <button id="btn-finalizar" class="btn btn-primary w-100 py-3 fw-bold rounded-pill">
+                    FINALIZAR PEDIDO
+                </button>
+            </form>
         </div>
     </div>
     @else
