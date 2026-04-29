@@ -2,8 +2,8 @@
     <div class="container-xl figma-shell">
         <div class="row g-4 figma-footer-grid">
             <div class="col-12 col-lg-3">
-                <img class="figma-footer-logo" src="{{ asset('img/logo.png') }}" alt="MecDonin">
-                <p>Company # 490039-445, Registered with<br>House of companies.</p>
+            <img src="{{ Storage::disk('s3')->url('marca/logo.png') }}" alt="MecDonin">
+                <p>Compan # 490039-445, Registered with<br>House of companies.</p>
             </div>
 
             <div class="col-12 col-lg-5">
@@ -13,20 +13,23 @@
                     <button type="submit">Inscrever-se</button>
                 </form>
                 <p>Nós não enviaremos spam, leia nossa política de e-mail</p>
-                <div class="figma-social-row" aria-label="Redes sociais">
-                    <a href="#" aria-label="Facebook">f</a>
-                    <a href="#" aria-label="Instagram">◎</a>
-                    <a href="#" aria-label="TikTok">♪</a>
-                    <a href="#" aria-label="Snapchat">♧</a>
-                </div>
+    <div class="figma-social-row" aria-label="Redes sociais">
+            <img src="{{ Storage::disk('s3')->url('rodape/redes/Facebook.png') }}" alt="Facebook">
+        </a>
+            <img src="{{ Storage::disk('s3')->url('rodape/redes/Instagram.png') }}" alt="Instagram">
+        </a>
+            <img src="{{ Storage::disk('s3')->url('rodape/redes/TikTok.png') }}" alt="TikTok">
+        </a>
             </div>
+                </div>
 
             <div class="col-6 col-lg-2">
                 <h3>Quem Somos</h3>
                 <p>
                     <a href="#informacoes">Privacidade</a><br>
                     <a href="#informacoes">Cookies</a><br>
-                    <a href="#avaliacoes">Nossa História</a>
+                    <a href="#avaliacoes">Nossa História</a><br>
+                    <a href="#termosecondicoes">termos e Condições</a><br>
                 </p>
             </div>
 
@@ -35,8 +38,8 @@
                 <p>
                     <a href="#">Ajuda</a><br>
                     <a href="#">Trabalhe Conosco</a><br>
-                    <a href="{{ route('perfil.index') }}">Entra Para Pedir</a><br>
-                    <a href="{{ route('register') }}">Criar uma Conta Administrativa</a>
+                    <a href="{{ route('bemvindo.index') }}">Entra Para Pedir</a><br>
+                 {{--   <a href=" {{ route('') }}">Criar uma Conta Administrativa</a> --}}
                 </p>
             </div>
         </div>

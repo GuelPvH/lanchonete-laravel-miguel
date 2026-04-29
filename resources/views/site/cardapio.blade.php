@@ -118,7 +118,7 @@
 
     <div class="container-xl figma-shell figma-topbar d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3">
         <a href="{{ route('bemvindo.index') }}" class="figma-brand" aria-label="MecDonin">
-            <img src="{{ asset('img/logo.png') }}" alt="MecDonin">
+            <img src="{{ Storage::disk('s3')->url('marca/logo.png') }}" alt="MecDonin">
         </a>
 
         <nav class="figma-actions d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end gap-2" aria-label="Ações do cardápio">
@@ -132,7 +132,7 @@
     <section class="container-xl figma-shell figma-hero" aria-label="Destaque MecDonin">
         <div class="row align-items-center g-4">
             <div class="col-12 col-lg-6 figma-hero-copy">
-                <p class="figma-hero-kicker">Eu amou come</p>
+                <p class="figma-hero-kicker">Eu amo comer</p>
                 <h1 class="figma-hero-title">Mecdonin</h1>
 
                 <div class="figma-hero-meta" aria-label="Informacoes rapidas">
@@ -337,7 +337,7 @@
 @endsection
 
 @section('footer')
-    @include('site.rodape')
+    @include('rodape.rodape')
 @endsection
 
 @section('scripts')

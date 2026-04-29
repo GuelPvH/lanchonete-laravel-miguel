@@ -18,7 +18,7 @@
     @else
         <header class="logo-container">
             <div class="logo-box">
-                <img src="{{ asset('img/fundo.png') }}" alt="Logo Lanchonete" class="logo-img">
+                <img src="{{ Storage::disk('s3')->url('img/marca/logo.png') }}" alt="Logo Lanchonete" class="logo-img">
             </div>
             <h1 style="color: var(--color-primary); font-weight: 800; font-style: italic;">MECDONIN</h1>
             <p class="small" style="font-weight: bold; letter-spacing: 1px;">MISTURA PERFEITA.</p>
