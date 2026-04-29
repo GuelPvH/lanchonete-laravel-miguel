@@ -44,8 +44,9 @@ class PedidoService{
         $itemPedido->delete();
     }
 
-    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?ItemPedido{
-        $itemPedido->update(['quantidade' => $quantidade]);
-        return $itemPedido;
+    public function alterarItemPedido(int $id, int $quantidade) : void{
+        ItemPedido::where('pedido_id', '=', $id)->update(['quantidade' => $quantidade]);
     }
+
+    
 }
