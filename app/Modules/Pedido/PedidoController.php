@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Modules\Pedido\PedidoService;
 use App\Models\Pedido;
 use App\Models\ItemPedido;
+use App\Models\Produto;
 use Illuminate\Http\JsonResponse;
 
 class PedidoController extends Controller{
@@ -49,6 +50,12 @@ class PedidoController extends Controller{
     }
 
     public function salvarItemPedido(Request $request) {
+        $dados = $request->validate([
+            'produto_id' => ['required', 'exists:produtos,id'],
+            'quantidade' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $produto = Produto::findOrFail($dados['produto_id']);
         $pedido_id = session('pedido_id');
 
         if (!$pedido_id) {
@@ -63,22 +70,21 @@ class PedidoController extends Controller{
         }
 
         $itemPedido = $this->service->adicionarItemPedido([
-            'produto_id' => $request->produto_id, 
-            'quantidade' => $request->quantidade, 
+            'produto_id' => $produto->id,
+            'quantidade' => $dados['quantidade'],
             'pedido_id'  => $pedido_id
         ]);
 
         if (!$request->wantsJson()) {
-            $produto = \App\Models\Produto::find($request->produto_id);
             $carrinho = session('carrinho', []);
             
             if (isset($carrinho[$produto->id])) {
-                $carrinho[$produto->id]['quantidade'] += $request->quantidade;
+                $carrinho[$produto->id]['quantidade'] += $dados['quantidade'];
             } else {
                 $carrinho[$produto->id] = [
                     'nome' => $produto->nome,
                     'preco' => $produto->preco,
-                    'quantidade' => $request->quantidade,
+                    'quantidade' => $dados['quantidade'],
                     'item_pedido_id' => $itemPedido->id ?? null
                 ];
             }
