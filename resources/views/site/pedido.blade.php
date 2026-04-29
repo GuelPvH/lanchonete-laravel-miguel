@@ -32,21 +32,21 @@
                 </p>
 
                 <div class="cart-qty-controls mt-2">
-                    <form action="{{ route('remover.item.pedido', $id, $verificadorAlteracao = 'remover') }}" method="POST" class="d-inline">
+                    <form action="{{ route('remover.unidade.item.pedido', $id) }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="cart-qty-btn">-</button>
                     </form>
 
                     <span class="mx-2 fw-bold">{{ $item['quantidade'] }}</span>
 
-                    <form action="{{ route('adicionar.item.pedido', $id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('adicionar.unidade.item.pedido', $id) }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="cart-qty-btn">+</button>
                     </form>
                 </div>
             </div>
 
-            <form action="{{ url('/pedido/remover-tudo/' . $id) }}" method="POST">
+            <form action="{{ route('remover.item.pedido', $id) }}" method="POST">
                 @csrf
                 <button type="submit" class="cart-remove">
                     <svg viewBox="0 0 24 24" width="24">

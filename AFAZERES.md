@@ -3,7 +3,7 @@
 //> Quando remover unidade do produto do carrinho alterar ItemPedido
 //> Quando adicionar unidade do produto do carrinho alterar ItemPedido
 //> Quando remover tudo do carrinho cancelar pedido 
-> Quando remover todas as unidades do produto do carrinho alterar ItemPedido
+//> Quando remover todas as unidades do produto do carrinho alterar ItemPedido
 
 
 ## Midleware

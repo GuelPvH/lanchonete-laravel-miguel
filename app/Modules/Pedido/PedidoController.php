@@ -104,16 +104,6 @@ class PedidoController extends Controller{
         session(['carrinhoTotal' => $total]);
     }
 
-    public function removerTudo(int $id) {
-        $carrinho = session('carrinho', []);
-        if (isset($carrinho[$id])) {
-            unset($carrinho[$id]);
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
-        }
-        return redirect()->route('pedido.ver');
-    }
-
     /*
         Sequência de funções que tratam a requisição para alterar a quantidade do pedido
     */
@@ -125,19 +115,27 @@ class PedidoController extends Controller{
     public function verificarSeSessaoCarrinhoExiste(int $id, string $rotaDeAlteracao){
         $carrinho = session('carrinho', []);
         if (isset($carrinho[$id])) {
-            $this->alterarQuantidadeItemPedido($id, $rotaDeAlteracao, $carrinho);
+            $this->verificaRotaDeAlteracao($id, $rotaDeAlteracao, $carrinho);
         }
         return redirect()->route('pedido.ver');
     }
 
-    public function alterarQuantidadeItemPedido(int $id, string $rotaDeAlteracao, array $carrinho){
-        if($rotaDeAlteracao == "remover.item.pedido"){
-            $carrinho = $this->removerUnidade($id, $carrinho);
+    public function verificaRotaDeAlteracao(int $id, string $rotaDeAlteracao, array $carrinho){
+        if(str_contains($rotaDeAlteracao, 'remover')){
+            $carrinho = $this->verificaTipoDeRemocao($id, $rotaDeAlteracao, $carrinho);
         }else{
             $carrinho = $this->adicionarUnidade($id, $carrinho);
         }
         session(['carrinho' => $carrinho]);
         return $this->recalcularCarrinho();
+    }
+
+    public function verificaTipoDeRemocao(int $id, string $rotaDeAlteracao, array $carrinho){
+        if(str_contains($rotaDeAlteracao, 'unidade')){
+            return $this->removerUnidade($id, $carrinho);
+        }else{
+            return $this->removerTudo($id, $carrinho);
+        }
     }
 
     public function removerUnidade(int $id, array $carrinho) : array{
@@ -155,6 +153,16 @@ class PedidoController extends Controller{
     public function adicionarUnidade(int $id, array $carrinho) : array{
         $carrinho[$id]['quantidade']++;
         $this->service->alterarItemPedido($carrinho[$id]['item_pedido_id'], $carrinho[$id]['quantidade']);
+        return $carrinho;
+    }
+
+    public function removerTudo(int $id, array $carrinho) : array {
+        unset($carrinho[$id]);
+        
+        $this->service->deletarItemsPedidoDePedido($id);
+        
+        $this->recalcularCarrinho();
+
         return $carrinho;
     }
 }
