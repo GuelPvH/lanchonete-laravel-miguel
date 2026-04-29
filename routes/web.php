@@ -4,6 +4,7 @@ use App\Modules\Produto\ProdutoController;
 use App\Modules\Cliente\ClienteController;
 use App\Modules\Pedido\PedidoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\EnsureTokenIsValid;
 
 // ROTAS RELACIONADAS AO CLIENTE
 
@@ -94,7 +95,7 @@ Route::post('/pedidos/finalizar', [PedidoController::class, 'salvarPedido'])->na
 
 Route::get('/produto/novo', function () {
     return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
-})->name('produto.index');
+})->middleware(EnsureTokenIsValid::class)->name('produto.index');
 
 Route::post('/produto/novo',  [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
 
