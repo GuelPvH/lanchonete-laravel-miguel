@@ -83,6 +83,8 @@
     $carrinho = collect(session('carrinho', []));
     $cartCount = (int) session('carrinhoCount', $carrinho->sum('quantidade'));
     $cartTotal = (float) session('carrinhoTotal', $carrinho->sum(fn ($item) => ($item['preco'] ?? 0) * ($item['quantidade'] ?? 0)));
+    $perfilOuLoginRoute = $clienteLogado ? route('perfil.index') : route('autorizacao.login');
+    $fallbackProdutoRoute = route('cardapio.index') . '#cardapio';
 @endphp
 
 @section('estilos')
@@ -101,7 +103,7 @@
                 </span>
             </span>
             <a
-                href="{{ $clienteLogado ? route('perfil.index') : '#' }}"
+                href="{{ $perfilOuLoginRoute }}"
                 class="figma-location-action"
                 @unless($clienteLogado) data-guest-location @endunless
             >
@@ -122,7 +124,7 @@
         </a>
 
         <nav class="figma-actions d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end gap-2" aria-label="Ações do cardápio">
-            <a href="{{ route('perfil.index') }}" class="figma-pill-link is-dark"><span class="figma-login-dot" aria-hidden="true"></span> Entrar/Cadastrar-se</a>
+            <a href="{{ $perfilOuLoginRoute }}" class="figma-pill-link is-dark"><span class="figma-login-dot" aria-hidden="true"></span> Entrar/Cadastrar-se</a>
         </nav>
     </div>
 </header>
@@ -186,7 +188,7 @@
                     @foreach($section['items'] as $item)
                         @php
                             $produtoId = $item['id'] ?? null;
-                            $href = $produtoId ? route('produto.show.id', ['id' => $produtoId]) : '#cardapio';
+                            $href = $produtoId ? route('produto.show.id', ['id' => $produtoId]) : $fallbackProdutoRoute;
                         @endphp
 
                         <div class="col-12 col-md-6 col-lg-4">
