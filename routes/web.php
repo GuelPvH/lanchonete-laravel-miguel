@@ -81,9 +81,9 @@ Route::get('/pedidos/{id}/total', [PedidoController::class, 'calcularTotal'])->n
 
 Route::post('/pedido/adicionar', [PedidoController::class, 'salvarItemPedido'])->name('pedido.adicionar');
 
-Route::post('/pedido/remover-unidade/{id}', [PedidoController::class, 'removerUnidade'])->name('remover.item.pedido');
+Route::post('/pedido/remover-unidade/{id}', [PedidoController::class, 'alteraItemDoPedido'])->name('remover.item.pedido');
 
-Route::post('/pedido/adicionar-unidade/{id}', [PedidoController::class, 'adicionarUnidade'])->name('adicionar.item.pedido');
+Route::post('/pedido/adicionar-unidade/{id}', [PedidoController::class, 'alteraItemDoPedido'])->name('adicionar.item.pedido');
 
 Route::post('/pedido/remover-tudo/{id}', [PedidoController::class, 'removerTudo']);
 

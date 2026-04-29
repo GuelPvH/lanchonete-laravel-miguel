@@ -41,13 +41,14 @@ class PedidoController extends Controller{
     }
     
     public function calcularTotal(Request $request){
-        dd($request->all());
+        //dd($request->all());
         $id = $request->id;
         $pedido = Pedido::find($id);
-        $total = $this->service->calcularValorTotal($id);
+        $total = $this->service->calcularValorTotal($pedido);
         return view('pedido.total', compact('total'));
     }
 
+    // Refatorar 
     public function salvarItemPedido(Request $request) {
         $pedido_id = session('pedido_id');
 
@@ -91,7 +92,7 @@ class PedidoController extends Controller{
         return response()->json($itemPedido);
     }
 
-    private function recalcularCarrinho() {
+        private function recalcularCarrinho() {
         $carrinho = session('carrinho', []);
         $count = 0;
         $total = 0;
@@ -101,29 +102,6 @@ class PedidoController extends Controller{
         }
         session(['carrinhoCount' => $count]);
         session(['carrinhoTotal' => $total]);
-    }
-
-    public function removerUnidade(int $id) {
-        $carrinho = session('carrinho', []);
-        if (isset($carrinho[$id])) {
-            $carrinho[$id]['quantidade']--;
-            if ($carrinho[$id]['quantidade'] <= 0) {
-                unset($carrinho[$id]);
-            }
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
-        }
-        return redirect()->route('pedido.ver');
-    }
-
-    public function adicionarUnidade(int $id) {
-        $carrinho = session('carrinho', []);
-        if (isset($carrinho[$id])) {
-            $carrinho[$id]['quantidade']++;
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
-        }
-        return redirect()->route('pedido.ver');
     }
 
     public function removerTudo(int $id) {
@@ -136,18 +114,47 @@ class PedidoController extends Controller{
         return redirect()->route('pedido.ver');
     }
 
-    public function deletarItemPedido(ItemPedido $itemPedido) : JsonResponse {
-        $this->service->deletarItemPedido($itemPedido);
-        return response()->json(['Mensagem' => 'Item Removido']);
+    /*
+        Sequência de funções que tratam a requisição para alterar a quantidade do pedido
+    */
+    public function alteraItemDoPedido(int $id, Request $request){
+        $rotaDeAlteracao = $request->route()->getName();
+        return $this->verificarSeSessaoCarrinhoExiste($id, $rotaDeAlteracao);
     }
 
-    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?JsonResponse{
-        $itemPedido = $this->service->alterarItemPedido($itemPedido, $quantidade);
-
-        if($itemPedido === null){
-            return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
+    public function verificarSeSessaoCarrinhoExiste(int $id, string $rotaDeAlteracao){
+        $carrinho = session('carrinho', []);
+        if (isset($carrinho[$id])) {
+            $this->alterarQuantidadeItemPedido($id, $rotaDeAlteracao, $carrinho);
         }
+        return redirect()->route('pedido.ver');
+    }
 
-        return response()->json($itemPedido);
+    public function alterarQuantidadeItemPedido(int $id, string $rotaDeAlteracao, array $carrinho){
+        if($rotaDeAlteracao == "remover.item.pedido"){
+            $carrinho = $this->removerUnidade($id, $carrinho);
+        }else{
+            $carrinho = $this->adicionarUnidade($id, $carrinho);
+        }
+        session(['carrinho' => $carrinho]);
+        return $this->recalcularCarrinho();
+    }
+
+    public function removerUnidade(int $id, array $carrinho) : array{
+
+        $carrinho[$id]['quantidade']--;
+        $this->service->alterarItemPedido($carrinho[$id]['item_pedido_id'], $carrinho[$id]['quantidade']);
+        if ($carrinho[$id]['quantidade'] <= 0) {
+            unset($carrinho[$id]);
+            $this->service->deletarItemsPedidoDePedido($id);
+        }
+        return $carrinho;
+    }
+
+
+    public function adicionarUnidade(int $id, array $carrinho) : array{
+        $carrinho[$id]['quantidade']++;
+        $this->service->alterarItemPedido($carrinho[$id]['item_pedido_id'], $carrinho[$id]['quantidade']);
+        return $carrinho;
     }
 }

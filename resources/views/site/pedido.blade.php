@@ -32,7 +32,7 @@
                 </p>
 
                 <div class="cart-qty-controls mt-2">
-                    <form action="{{ route('remover.item.pedido', $id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('remover.item.pedido', $id, $verificadorAlteracao = 'remover') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="cart-qty-btn">-</button>
                     </form>
