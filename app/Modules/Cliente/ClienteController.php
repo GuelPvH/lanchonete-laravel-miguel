@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Modules\Cliente\ClienteService;
 use App\Models\Cliente;
+use Illuminate\Http\RedirectResponse;
+use App\Modules\Cliente\StoreClienteRequest;
 
 class ClienteController extends Controller
 {
@@ -13,20 +15,29 @@ class ClienteController extends Controller
     }
 
     public function salvarCliente(Request $request) {
-        $numero = $request->numero ?? $request->telefone;
-        $cliente = $this->service->adcionarCliente($request->nome, $request->email, $request->cpf, $numero, $request->senha);
+        //dd($request->all());
+        $cliente = $this->service->adcionarCliente(
+            $request->nome, 
+            $request->email, 
+            $request->cpf, 
+            $request->numero, 
+            $request->senha
+            );
+        return redirect()->route('autorizacao.login');
         
-        if (!$request->wantsJson()) {
-            $request->session()->regenerate();
+        /* if (!$request->wantsJson()) {
             session([
                 'cliente_id' => $cliente->id,
                 'nome_cliente' => $cliente->nome,
                 'sobrenome_cliente' => $request->sobrenome
             ]);
             return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
-        }
-
-        return response()->json($cliente);
+        } */
+        
+        //return response()->json($cliente);
+        //dd($request->all());
+        //$request->validated();
+        //return view('clientes');
     }
 
     public function login(Request $request) {
@@ -49,7 +60,7 @@ class ClienteController extends Controller
             'sobrenome_cliente' => $request->sobrenome
         ]);
 
-        return redirect()->route('cardapio.index')->with('mensagem', 'Login realizado com sucesso!');
+        return redirect()->route('cardapio.index');
     }
 
     public function solicitarRecuperacaoSenha(Request $request) {
@@ -111,7 +122,7 @@ class ClienteController extends Controller
         }
 
         return redirect()
-            ->route('login')
+            ->route('autorizacao.login')
             ->with('mensagem', 'Senha redefinida com sucesso. Faça login novamente.');
     }
 

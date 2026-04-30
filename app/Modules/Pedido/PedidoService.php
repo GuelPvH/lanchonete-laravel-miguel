@@ -10,8 +10,12 @@ class PedidoService{
         return Pedido::create(['cliente_id' => $cliente_id]);
     }
 
-    public function deletarPedido(Pedido $pedido) : void{
-        $pedido->delete();
+    public function deletarPedido(int $id){
+        Pedido::destroy($id);
+    }
+
+    public function deletarItemsPedidoDePedido(int $id){
+        ItemPedido::where('pedido_id', '=', $id)->delete();
     }
     
     public function alterarPedido(Pedido $pedido, int $cliente_id) : ?Pedido{
@@ -40,8 +44,9 @@ class PedidoService{
         $itemPedido->delete();
     }
 
-    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?ItemPedido{
-        $itemPedido->update(['quantidade' => $quantidade]);
-        return $itemPedido;
+    public function alterarItemPedido(int $id, int $quantidade) : void{
+        ItemPedido::where('pedido_id', '=', $id)->update(['quantidade' => $quantidade]);
     }
+
+    
 }

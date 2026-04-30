@@ -4,41 +4,55 @@ use App\Modules\Produto\ProdutoController;
 use App\Modules\Cliente\ClienteController;
 use App\Modules\Pedido\PedidoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\EnsureTokenIsValid;
 
-// VIEWS PRINCIPAIS
+// ROTAS RELACIONADAS AO CLIENTE
 
 Route::get('/', function () {
-    return view('cardapio', ['produtos' => \App\Models\Produto::all()]);
+    return view('/site/bem-vindo');
+})->name('bemvindo.index');
+
+Route::get('/cardapio', function () {
+    return view('/site/cardapio', ['produtos' => \App\Models\Produto::all()]);
 })->name('cardapio.index');
 
-Route::get('/produto/{id}', function ($id) {
-    return view('produto', ['produto' => \App\Models\Produto::find($id)]);
-})->name('produto.show');
-
 Route::get('/pedido', function () {
-    return view('pedido', ['total' => session('carrinhoTotal', 0)]);
+    return view('site/pedido', ['total' => session('carrinhoTotal', 0)]);
 })->name('pedido.ver');
 
+Route::post('/pagamento', [PedidoController::class, 'calcularTotal'])->name('pagamento.index');
+
+/* Route::get('/cliente', function () {
+    return view('site/cardapio',  ['produtos' => \App\Models\Produto::all()]);
+})->name('cliente.index'); */ 
+
+
+
 Route::get('/perfil', function () {
-    return view('perfil');
+    return view('site/perfil');
 })->name('perfil.index');
 
 Route::post('/perfil/atualizar', [ClienteController::class, 'atualizarPerfilWeb'])->name('perfil.atualizar');
 
+Route::get('/pagamento/', function(){
+    return view('site/pagamento');
+})->name('pagamento.index');
 
 // ROTAS DE AUTENTICAÇÃO 
 
-Route::get('/cliente', function () {
-    return view('autorizacao.bem-vindo');
-})->name('cliente.index');
-
-Route::get('/login', function () {
+Route::get('autorizacao/login', function () {
     return view('autorizacao.login');
-})->name('login');
+})->name('autorizacao.login');
+
+Route::post('autorizacao/login', [ClienteController::class, 'login'])->name('cliente.login');
 
 Route::get('/cadastro', function () {
     return view('autorizacao.cadastro');
 })->name('register');
+
+/* Route::post('/cadastro', [ClienteController::class, 'adicionarCliente'], function () {
+    return view('autorizacao.cadastro');
+})->name('register'); */
 
 Route::get('/recuperar-senha', function () {
     return view('autorizacao.esqueci-senha');
@@ -54,27 +68,46 @@ Route::get('/nova-senha', function () {
 
 
 // ROTAS PEDIDOS
+Route::get('/pedidos', function() {
+    return view('site/pedido');
+})->name('pedido.index');
 
 Route::post('/pedidos', [PedidoController::class, 'salvarPedido'])->name('pedido.salvar');
-Route::delete('/pedidos/{pedido}', [PedidoController::class, 'deletarPedido'])->name('pedido.deletar');
+
+Route::delete('/pedidos/{id}', [PedidoController::class, 'deletarPedido'])->name('pedido.deletar');
+
 Route::put('/pedidos/{pedido}', [PedidoController::class, 'alterarPedido'])->name('pedido.alterar');
+
 Route::get('/pedidos/{id}/total', [PedidoController::class, 'calcularTotal'])->name('pedido.total');
-Route::post('/pedidos/adicionar', [PedidoController::class, 'salvarItemPedido'])->name('pedido.adicionar');
-Route::post('/pedido/remover-unidade/{id}', [PedidoController::class, 'removerUnidade']);
-Route::post('/pedido/adicionar-unidade/{id}', [PedidoController::class, 'adicionarUnidade']);
-Route::post('/pedido/remover-tudo/{id}', [PedidoController::class, 'removerTudo']);
+
+Route::post('/pedido/adicionar', [PedidoController::class, 'salvarItemPedido'])->name('pedido.adicionar');
+
+Route::post('/pedido/remover-unidade/{id}', [PedidoController::class, 'alteraItemDoPedido'])->name('remover.unidade.item.pedido');
+
+Route::post('/pedido/adicionar-unidade/{id}', [PedidoController::class, 'alteraItemDoPedido'])->name('adicionar.unidade.item.pedido');
+
+Route::post('/pedido/remover-tudo/{id}', [PedidoController::class, 'alteraItemDoPedido'])->name('remover.item.pedido');
+
 Route::post('/pedidos/finalizar', [PedidoController::class, 'salvarPedido'])->name('pedido.finalizar');
 
 
 // ROTAS PRODUTOS
 
-Route::get('/produtos/novo', function () {
-    return view('produto_novo');
-})->name('produto.novo');
+Route::get('/produto/novo', function () {
+    return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
+})->middleware(EnsureTokenIsValid::class)->name('produto.index');
 
-Route::post('/produtos', [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
-Route::delete('/produtos/{produto}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
-Route::put('/produtos/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
+Route::post('/produto/novo',  [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
+
+Route::delete('/produto/{id}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
+
+Route::put('/produto/{produto}', [ProdutoController::class, 'alterarProduto'])->name('produto.alterar');
+
+Route::get('/produto', function () {
+    return view('site/cardapio', [ProdutoController::class, 'listarProduto']);
+})->name('produto.show');
+
+Route::get('/produto/{id}', [ProdutoController::class, 'listarProdutoById'])->name('produto.show.id');
 
 
 // ROTAS CLIENTE 
@@ -86,7 +119,7 @@ Route::get('/logout', [ClienteController::class, 'sair'])->name('cliente.sair');
 Route::post('/clientes', [ClienteController::class, 'salvarCliente'])->name('cliente.salvar');
 
 // login real
-Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
+//Route::post('/login', [ClienteController::class, 'login'])->name('cliente.login');
 Route::post('/recuperar-senha', [ClienteController::class, 'solicitarRecuperacaoSenha'])->name('password.email');
 Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('password.update');
 

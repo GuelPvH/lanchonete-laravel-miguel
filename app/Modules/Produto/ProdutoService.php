@@ -22,4 +22,8 @@ class ProdutoService{
         $produto->update($dados);
         return $produto;
     }
+
+    public function listarProduto(){
+        return Produto::all();
+    }
 }

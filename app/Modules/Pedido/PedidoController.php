@@ -18,9 +18,16 @@ class PedidoController extends Controller{
         return response()->json($pedido);
     }
 
-    public function deletarPedido(Pedido $pedido) : JsonResponse {
-        $this->service->deletarPedido($pedido);
-        return response()->json(['Mensagem' => 'Pedido Removido']);
+    public function deletarPedido(int $id){
+        $this->service->deletarItemsPedidoDePedido($id);
+        $this->service->deletarPedido($id);
+        $this->destroiSessaoCarrinho();
+        return redirect()->route('cardapio.index');
+    }
+
+    public function destroiSessaoCarrinho(){
+        session()->forget('carrinho');
+        session()->forget('carrinhoCount');
     }
 
     public function alterarPedido(Request $request, Pedido $pedido) : ?JsonResponse{
@@ -32,19 +39,23 @@ class PedidoController extends Controller{
 
         return response()->json($pedido);
     }
-
-    public function calcularTotal(Request $request) : JsonResponse{
-        $pedido = $this->service->calcularValorTotal($request->id);
-        return response()->json($pedido);
+    
+    public function calcularTotal(Request $request){
+        //dd($request->all());
+        $id = $request->id;
+        $pedido = Pedido::find($id);
+        $total = $this->service->calcularValorTotal($pedido);
+        return view('pedido.total', compact('total'));
     }
 
+    // Refatorar 
     public function salvarItemPedido(Request $request) {
         $pedido_id = session('pedido_id');
 
         if (!$pedido_id) {
             $clienteId = session('cliente_id');
             if (!$clienteId) {
-                if (!$request->wantsJson()) return redirect()->route('cliente.index');
+                if (!$request->wantsJson()) return redirect()->route('cardapio.index');
                 return response()->json(['Mensagem' => 'Nenhum cliente na sessão'], 401);
             }
             $pedido = $this->service->adicionarPedido($clienteId);
@@ -81,7 +92,7 @@ class PedidoController extends Controller{
         return response()->json($itemPedido);
     }
 
-    private function recalcularCarrinho() {
+        private function recalcularCarrinho() {
         $carrinho = session('carrinho', []);
         $count = 0;
         $total = 0;
@@ -93,51 +104,65 @@ class PedidoController extends Controller{
         session(['carrinhoTotal' => $total]);
     }
 
-    public function removerUnidade(int $id) {
+    /*
+        Sequência de funções que tratam a requisição para alterar a quantidade do pedido
+    */
+    public function alteraItemDoPedido(int $id, Request $request){
+        $rotaDeAlteracao = $request->route()->getName();
+        return $this->verificarSeSessaoCarrinhoExiste($id, $rotaDeAlteracao);
+    }
+
+    public function verificarSeSessaoCarrinhoExiste(int $id, string $rotaDeAlteracao){
         $carrinho = session('carrinho', []);
         if (isset($carrinho[$id])) {
-            $carrinho[$id]['quantidade']--;
-            if ($carrinho[$id]['quantidade'] <= 0) {
-                unset($carrinho[$id]);
-            }
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
+            $this->verificaRotaDeAlteracao($id, $rotaDeAlteracao, $carrinho);
         }
         return redirect()->route('pedido.ver');
     }
 
-    public function adicionarUnidade(int $id) {
-        $carrinho = session('carrinho', []);
-        if (isset($carrinho[$id])) {
-            $carrinho[$id]['quantidade']++;
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
+    public function verificaRotaDeAlteracao(int $id, string $rotaDeAlteracao, array $carrinho){
+        if(str_contains($rotaDeAlteracao, 'remover')){
+            $carrinho = $this->verificaTipoDeRemocao($id, $rotaDeAlteracao, $carrinho);
+        }else{
+            $carrinho = $this->adicionarUnidade($id, $carrinho);
         }
-        return redirect()->route('pedido.ver');
+        session(['carrinho' => $carrinho]);
+        return $this->recalcularCarrinho();
     }
 
-    public function removerTudo(int $id) {
-        $carrinho = session('carrinho', []);
-        if (isset($carrinho[$id])) {
+    public function verificaTipoDeRemocao(int $id, string $rotaDeAlteracao, array $carrinho){
+        if(str_contains($rotaDeAlteracao, 'unidade')){
+            return $this->removerUnidade($id, $carrinho);
+        }else{
+            return $this->removerTudo($id, $carrinho);
+        }
+    }
+
+    public function removerUnidade(int $id, array $carrinho) : array{
+
+        $carrinho[$id]['quantidade']--;
+        $this->service->alterarItemPedido($carrinho[$id]['item_pedido_id'], $carrinho[$id]['quantidade']);
+        if ($carrinho[$id]['quantidade'] <= 0) {
             unset($carrinho[$id]);
-            session(['carrinho' => $carrinho]);
-            $this->recalcularCarrinho();
+            $this->service->deletarItemsPedidoDePedido($id);
         }
-        return redirect()->route('pedido.ver');
+        return $carrinho;
     }
 
-    public function deletarItemPedido(ItemPedido $itemPedido) : JsonResponse {
-        $this->service->deletarItemPedido($itemPedido);
-        return response()->json(['Mensagem' => 'Item Removido']);
+
+    public function adicionarUnidade(int $id, array $carrinho) : array{
+        $carrinho[$id]['quantidade']++;
+        $this->service->alterarItemPedido($carrinho[$id]['item_pedido_id'], $carrinho[$id]['quantidade']);
+        return $carrinho;
     }
 
-    public function alterarItemPedido(ItemPedido $itemPedido, int $quantidade) : ?JsonResponse{
-        $itemPedido = $this->service->alterarItemPedido($itemPedido, $quantidade);
+    public function removerTudo(int $id, array $carrinho) : array {
+        unset($carrinho[$id]);
+        
+        $this->service->deletarItemsPedidoDePedido($id);
+        
+        $this->recalcularCarrinho();
 
-        if($itemPedido === null){
-            return response()->json(['Mensagem' => 'Cliente Não Encontrado'], 404);
-        }
-
-        return response()->json($itemPedido);
+        return $carrinho;
     }
 }
