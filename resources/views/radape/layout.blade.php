@@ -25,6 +25,7 @@
     </div>
 @endsection
 
+
 @section('footer')
     @include('radape.rodape')
 @endsection
