@@ -41,6 +41,7 @@ class ClienteController extends Controller
     }
 
     public function login(Request $request) {
+        //dd($request->all());
         $cliente = Cliente::where('email', $request->email)->first();
 
         if (!$cliente || !password_verify($request->senha, $cliente->senha)) {

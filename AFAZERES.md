@@ -12,6 +12,9 @@
 ## Validations 
 > Validar os dados que são enviados
 
+## Notifications 
+
+
 ## Metodo de Pagamento 
 > Tirar calculo do pagamento do front-end 
 > Fazer a requisição para pegar o valor do Controller 
@@ -27,6 +30,10 @@
 ## Pedidos
 * Repensar em como um pedido vai ser criado para só criar um pedido quando eu usuário criar não quando ele fizer log-in.
   Criar pedido por sessão nova.(Verificar relação de cash com sessão do usuário que faz pedido).
+
+## Clientes
+* Criar a tabela usuários e verificar se ele é admin.
+
 -------------------------------------------------------------------------------------------------------
 
 # Miguel 

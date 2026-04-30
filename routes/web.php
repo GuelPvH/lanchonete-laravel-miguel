@@ -5,6 +5,7 @@ use App\Modules\Cliente\ClienteController;
 use App\Modules\Pedido\PedidoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
+use App\Http\Controllers\LoginController;
 
 // ROTAS RELACIONADAS AO CLIENTE
 
@@ -44,7 +45,7 @@ Route::get('autorizacao/login', function () {
     return view('autorizacao.login');
 })->name('autorizacao.login');
 
-Route::post('autorizacao/login', [ClienteController::class, 'login'])->name('cliente.login');
+Route::post('autorizacao/login', [LoginController::class, 'authenticate'])->middleware('auth.basic')->name('cliente.login');
 
 Route::get('/cadastro', function () {
     return view('autorizacao.cadastro');
@@ -126,3 +127,4 @@ Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('
 
 Route::delete('/clientes/{cliente}', [ClienteController::class, 'deletarCliente'])->name('cliente.deletar');
 Route::put('/clientes/{cliente}', [ClienteController::class, 'alterarCliente'])->name('cliente.alterar');
+

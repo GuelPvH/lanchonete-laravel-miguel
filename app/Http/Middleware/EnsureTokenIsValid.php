@@ -13,11 +13,14 @@ class EnsureTokenIsValid
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        /* if ($request->input('token') !== 'my-secret-token') {
-            return redirect()->route('bemvindo.index');
-        } */
-        return $next($request); 
+    public function handle(Request $request, Closure $next) : Response {
+
+        /* 
+            if ($request->input('token') !== 'my-secret-token') {
+                return redirect()->route('bemvindo.index');
+            }
+        */
+
+        return $next($request);
     }
 }
