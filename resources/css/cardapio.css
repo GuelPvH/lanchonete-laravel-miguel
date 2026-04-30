@@ -1,8 +1,13 @@
 /*
-Estilos do cardapio.
-O HTML usa Bootstrap para estrutura; este arquivo deixa o visual parecido com o Figma.
+================================================================================
+                           Estilos do Cardápio
+================================================================================
 */
 
+/* 
+Estilos base: Reseta margens e define o fundo geral da aplicação 
+A cor branca (#ffffff) é usada como padrão para limpeza e legibilidade.
+*/
 body {
     background: #ffffff;
     padding-bottom: 0;
@@ -248,6 +253,11 @@ body {
     flex: 0 0 auto;
 }
 
+/* 
+Botão Arredondado (Pill Link): Um botão genérico com bordas totalmente 
+arredondadas. Usado para CTAs (Calls to Action) como "Entrar/Cadastrar-se".
+Ele funciona como um elemento clicável, e a classe .is-dark inverte as cores. 
+*/
 .figma-pill-link {
     display: inline-flex;
     align-items: center;
@@ -444,8 +454,8 @@ body {
     min-height: 52px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 14px;
-    padding-left: 72px;
     border-radius: 0 10px 0 0;
     color: #03081f;
     background: #ffda09;
@@ -468,6 +478,11 @@ body {
     line-height: 1.15;
 }
 
+/* 
+Campo de Busca (Search Field): Um contêiner que agrupa o ícone de lupa 
+e o elemento de entrada de texto (input). O fundo branco e bordas suaves 
+trazem um design amigável e limpo (clean).
+*/
 .figma-search-field {
     min-height: 52px;
     display: flex;
@@ -573,6 +588,11 @@ body {
     --bs-gutter-y: 32px;
 }
 
+/* 
+Cartão de Produto (Menu Card): O componente de exibição individual de comida. 
+Funciona como um link <a>. Ao passar o mouse (hover), ele se eleva (translada 
+para cima) e sua sombra (box-shadow) aumenta, indicando interatividade.
+*/
 .figma-menu-card {
     position: relative;
     min-height: 204px;
@@ -642,6 +662,11 @@ body {
     object-fit: cover;
 }
 
+/* 
+Botão Adicionar (Plus Button): Elemento visual posicionado no canto inferior 
+direito da imagem do produto. Simula o botão de "Adicionar ao carrinho" (CTA)
+visto no design do Figma, criado puramente com CSS.
+*/
 .figma-plus {
     position: absolute;
     right: 0;
@@ -655,18 +680,19 @@ body {
     background: rgba(255, 255, 255, 0.92);
 }
 
-.figma-plus::before,
-.figma-plus::after {
-    content: "";
+.figma-plus::before {
+    content: "+";
     position: absolute;
-    width: 24px;
-    height: 5px;
-    border-radius: 99px;
+    width: 44px;
+    height: 44px;
     background: #03081f;
-}
-
-.figma-plus::after {
-    transform: rotate(90deg);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 400;
 }
 
 .figma-empty {
@@ -948,6 +974,10 @@ body {
     font-weight: 700;
 }
 
+/* 
+Botão de Inscrição (Newsletter Submit): Elemento clicável (<button>) que submete
+o email do usuário. Usa a cor amarelo/laranja de destaque para atrair a atenção.
+*/
 .figma-newsletter button {
     min-height: 50px;
     border: 0;
@@ -978,7 +1008,14 @@ body {
 }
 
 .figma-footer-bottom {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    background: #202020;
+    color: #ffffff;
+    font-size: 13px;
+    margin-top: 42px;
 }
 
 @media (min-width: 992px) {

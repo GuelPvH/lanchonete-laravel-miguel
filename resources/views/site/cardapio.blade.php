@@ -92,7 +92,9 @@
 @endsection
 
 @section('header')
+<!-- Cabeçalho Principal da Página (Header) -->
 <header class="figma-site-header">
+    <!-- Faixa Promocional no topo (Promo Strip). Geralmente exibe cupons ou alertas. -->
     <div class="container-xl figma-shell figma-promo-strip d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2">
         <p class="mb-0"><span class="figma-spark" aria-hidden="true"></span> Ganhe 5% de desconto no seu primeiro pedido, Cupom: <strong>MecDonin5</strong></p>
         <div class="figma-promo-meta d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end gap-3">
@@ -102,6 +104,7 @@
                     {{ $clienteLogado ? 'Cadastre sua localização manualmente' : 'Nome da rua, Cidade' }}
                 </span>
             </span>
+            <!-- Botão de Ação (Link <a> estilizado) para obter a localização do usuário -->
             <a
                 href="{{ $perfilOuLoginRoute }}"
                 class="figma-location-action"
@@ -109,6 +112,7 @@
             >
                 {{ $clienteLogado ? 'Cadastrar localização' : 'Pegar Minha Localização' }}
             </a>
+            <!-- Botão do Carrinho (Link <a> que leva para a página de pedidos) -->
             <a href="{{ route('pedido.ver') }}" class="figma-cart-bar" aria-label="Abrir carrinho">
                 <span class="figma-cart-visual" aria-hidden="true"><span class="figma-cart-check"></span></span>
                 <span>{{ str_pad($cartCount, 2, '0', STR_PAD_LEFT) }} Items</span>
@@ -120,7 +124,7 @@
 
     <div class="container-xl figma-shell figma-topbar d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3">
         <a href="{{ route('bemvindo.index') }}" class="figma-brand" aria-label="MecDonin">
-            <img src="{{ Storage::disk('s3')->url('marca/logo.png') }}" alt="MecDonin">
+            <img src="{{ asset('img/figma/radape/logo-mecdonin.png') }}" alt="MecDonin">
         </a>
 
         <nav class="figma-actions d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end gap-2" aria-label="Ações do cardápio">
@@ -131,8 +135,10 @@
 @endsection
 
 @section('conteudo')
+    <!-- Seção Principal de Destaque (Hero Section). É a primeira coisa que o usuário vê (banner grande). -->
     <section class="container-xl figma-shell figma-hero" aria-label="Destaque MecDonin">
         <div class="row align-items-center g-4">
+            <!-- Área de texto do Hero (Título e subtítulo) -->
             <div class="col-12 col-lg-6 figma-hero-copy">
                 <p class="figma-hero-kicker">Eu amo comer</p>
                 <h1 class="figma-hero-title">Mecdonin</h1>
@@ -148,19 +154,21 @@
                     <div>
                         <strong>3.4</strong>
                         <div class="figma-stars">★★★★★</div>
-                        <small>1.360+ avaliacoes</small>
+                        <small>1,360 reviews</small>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="figma-delivery-tab"><span aria-hidden="true">⚲</span> Entrega em 20-25 minutos</div>
+        <div class="figma-delivery-tab"><span aria-hidden="true">🛵</span> Entrega em 20-25 minutos</div>
     </section>
 
+    <!-- Seção de Busca (Search Bar). Permite ao usuário filtrar itens do cardápio. -->
     <section class="figma-offers-head py-4" aria-label="Busca no cardápio">
         <div class="container-xl figma-shell">
             <div class="row align-items-center g-3">
                 <h2 class="col-12 col-lg mb-0">Todas as ofertas do MecDonin</h2>
+                <!-- Campo de Busca (Input Type Search). É onde o usuário digita o texto. -->
                 <label class="col-12 col-lg-auto figma-search-field">
                     <span>⌕</span>
                     <input type="search" placeholder="Pesquisar no menu..." data-menu-search>
@@ -169,9 +177,11 @@
         </div>
     </section>
 
+    <!-- Barra de Navegação de Categorias (Pills ou abas). Menu horizontal para rolar rapidamente até a seção de comida. -->
     <nav class="figma-category-bar" aria-label="Categorias do cardápio">
         <div class="container-xl figma-shell figma-category-list d-flex align-items-center gap-2">
             @foreach($categoryTabs as $tab)
+                <!-- Link de Categoria (botão que rola a página para uma categoria específica) -->
                 <a href="#{{ $tab['id'] }}" class="figma-category-link {{ $loop->first ? 'active' : '' }}">
                     {{ $tab['title'] }}
                 </a>
@@ -191,6 +201,7 @@
                             $href = $produtoId ? route('produto.show.id', ['id' => $produtoId]) : $fallbackProdutoRoute;
                         @endphp
 
+                        <!-- Cartão do Produto (Product Card). Um bloco clicável que exibe imagem, nome e preço. -->
                         <div class="col-12 col-md-6 col-lg-4">
                             <a href="{{ $href }}" class="figma-menu-card h-100" data-menu-card data-search="{{ strtolower($item['nome'] . ' ' . $item['descricao'] . ' ' . $section['title']) }}">
                                 <div class="figma-card-copy">
@@ -266,6 +277,7 @@
         </section>
     </main>
 
+    <!-- Seção de Avaliações (Reviews). Exibe depoimentos dos usuários. -->
     <section id="avaliacoes" class="figma-reviews">
         <div class="container-xl figma-shell">
             <div class="figma-review-head d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
