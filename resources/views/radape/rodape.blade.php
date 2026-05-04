@@ -58,4 +58,10 @@
             <a href="{{ route('register') }}">Criar uma Conta Administrativa</a>
         </nav>
     </div>
+    
+        <div class="figma-footer-bottom">
+            <div class="container-xl figma-shell text-center">
+                MecDonin.br Copyright 2024, Todos os Direitos Reservados.
+            </div>
+        </div>
 </footer>

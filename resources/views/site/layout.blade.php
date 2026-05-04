@@ -38,8 +38,8 @@
         <footer style="text-align: center; padding: 20px;">
             <p>&copy; {{ date('Y') }} - MECDONIN</p>
         </footer>
+        @yield('radape-conteudo')
     @endif
-
-    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

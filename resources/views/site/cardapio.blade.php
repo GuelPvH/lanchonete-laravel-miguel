@@ -8,7 +8,7 @@
 @endsection
 
 @section('header')
-<!-- Cabeçalho Principal da Página (Header) -->
+<!-- Cabeçalho Principal da Página -->
 <header class="figma-site-header">
     <!-- Faixa superior com cupom (condicional), localização e carrinho -->
     <div class="container-xl figma-shell figma-promo-strip d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2">
@@ -109,7 +109,10 @@
                 <h1 class="figma-hero-title">Mecdonin</h1>
 
                 <div class="figma-hero-meta" aria-label="Informacoes rapidas">
-                    <span class="figma-meta-chip"><span class="figma-clock-dot" aria-hidden="true"></span> Preparo em 20-25 minutos</span>
+                    <span class="figma-meta-chip">
+                        <span class="figma-clock-dot" aria-hidden="true"></span>
+                        Preparo em 20-25 minutos
+                    </span>
                 </div>
             </div>
 
@@ -126,7 +129,10 @@
             </div>
         </div>
 
-        <div class="figma-delivery-tab"><span aria-hidden="true">🛵</span> Entrega em 20-25 minutos</div>
+        <div class="figma-delivery-tab">
+            <span aria-hidden="true">🛵</span>
+            Entrega em 20-25 minutos
+        </div>
     </section>
 
     <!-- Seção de Busca -->
@@ -158,7 +164,9 @@
     <main id="cardapio" class="container-xl figma-shell figma-main">
         @foreach($sections as $section)
             <section id="{{ $section['id'] }}" class="figma-section" data-menu-section>
-                <h2 class="figma-section-title {{ $loop->first ? '' : 'is-orange' }}">{{ $section['title'] }}</h2>
+                <h2 class="figma-section-title {{ $loop->first ? '' : 'is-orange' }}">
+                    {{ $section['title'] }}
+                </h2>
 
                 <div class="row g-4 figma-grid">
                     @foreach($section['items'] as $item)
@@ -173,7 +181,9 @@
                                 <div class="figma-card-copy">
                                     <h3 class="figma-card-title">{{ $item['nome'] }}</h3>
                                     <p class="figma-card-desc">{{ $item['descricao'] }}</p>
-                                    <strong class="figma-card-price">R$ {{ number_format($item['preco'], 2, ',', '.') }}</strong>
+                                    <strong class="figma-card-price">
+                                        R$ {{ number_format($item['preco'], 2, ',', '.') }}
+                                    </strong>
                                 </div>
 
                                 <div class="figma-card-media">
@@ -236,11 +246,20 @@
             <a class="figma-map-link" href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir localizacao da MecDonin no Google Maps">
                 <img src="{{ asset('img/figma/map.png') }}" alt="Mapa da localização MecDonin em Porto Velho" class="img-fluid w-100">
             </a>
+
             <div class="figma-map-card">
                 <h3>MecDonin</h3>
                 <p>Complexo Rio Madeira - Av. Farquar, 2986 - Pedrinhas, Porto Velho - RO</p>
-                <p><strong>Numero de Telefone</strong><br><span class="is-orange">(69) 9 9268-4476</span></p>
-                <p><strong>Website</strong><br><span class="is-orange">https://shre.ink/MecDonin</span></p>
+
+                <p>
+                    <strong>Numero de Telefone</strong><br>
+                    <span class="is-orange">(69) 9 9268-4476</span>
+                </p>
+
+                <p>
+                    <strong>Website</strong><br>
+                    <span class="is-orange">https://shre.ink/MecDonin</span>
+                </p>
             </div>
         </section>
     </main>
@@ -250,6 +269,7 @@
         <div class="container-xl figma-shell">
             <div class="figma-review-head d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
                 <h2>Avaliações de Clientes</h2>
+
                 <div class="figma-review-actions d-flex gap-2" aria-hidden="true">
                     <span class="figma-circle-btn">‹</span>
                     <span class="figma-circle-btn">›</span>
@@ -263,28 +283,36 @@
                         <div class="figma-review-top">
                             <div class="figma-review-person">
                                 <span class="figma-avatar">S</span>
+
                                 <div>
                                     <p class="figma-review-name">St Glx</p>
                                     <p class="figma-review-city">South London</p>
                                 </div>
                             </div>
+
                             <span class="figma-review-date">24th September, 2023</span>
                             <span class="figma-stars">★★★★★</span>
                         </div>
-                        <p>The positive aspect was undoubtedly the efficiency of the service. The queue moved quickly, the staff was friendly, and the food was up to the usual McDonald's standard - hot and satisfying.</p>
+
+                        <p>
+                            The positive aspect was undoubtedly the efficiency of the service.
+                            The queue moved quickly, the staff was friendly, and the food was up
+                            to the usual McDonald's standard - hot and satisfying.
+                        </p>
                     </div>
                 </article>
                 @endfor
             </div>
 
-            <div class="figma-rating-summary" aria-label="Avaliação média 3.4 de 5">
+        <!--     <div class="figma-rating-summary" aria-label="Avaliação média 3.4 de 5">
                 <strong>3.4</strong>
                 <span class="figma-stars">★★★☆☆</span>
                 <small>1.360 reviews</small>
-            </div>
+            </div> _    -->
         </div>
     </section>
 @endsection
+
 
 @section('footer')
     @include('radape.rodape')
