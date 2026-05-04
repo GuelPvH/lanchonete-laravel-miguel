@@ -11,9 +11,7 @@ Route::get('/', function () {
     return view('/site/bem-vindo');
 })->name('bemvindo.index');
 
-Route::get('/cardapio', function () {
-    return view('/site/cardapio', ['produtos' => \App\Models\Produto::all()]);
-})->name('cardapio.index');
+Route::get('/cardapio', [App\Modules\Produto\ProdutoController::class, 'index'])->name('cardapio.index');
 
 Route::get('/pedido', function () {
     return view('site/pedido', ['total' => session('carrinhoTotal', 0)]);
