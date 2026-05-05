@@ -14,12 +14,45 @@ class ProdutoController extends Controller{
         $this->service = $service;
     }
 
+    /**
+     * Salva um novo produto no banco de dados e envia a imagem para o MinIO.
+     * Somente administradores podem acessar esta função (protegido por middleware auth:admin).
+     */
     public function salvarProduto(Request $request){
+        // Valida os dados enviados pelo formulário
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'descricao' => 'nullable|string|max:500',
+            'preco' => 'required',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048|dimensions:max_width=2000,max_height=2000,ratio=1/1',
+        ], [
+            'imagem.dimensions' => 'A imagem precisa ter proporção 1:1 (quadrada) e no máximo 2000x2000 pixels.',
+            'imagem.max' => 'A imagem não pode ter mais que 2MB.',
+        ]);
+
+        $imagePath = null;
+        // Verifica se uma imagem foi enviada
+        if ($request->hasFile('imagem')) {
+            // Salva a imagem no disco 's3' (MinIO local) e pega o caminho gerado
+            $imagePath = $request->file('imagem')->store('produtos', 's3');
+        }
+
+        // Converte o preço de "25,50" para formato float "25.50"
         $preco = str_replace(',', '.', $request->preco);
-        $produto = $this->service->adicionarProduto($request->nome, $preco);
         
+        // Passa os dados estruturados para a camada de serviço que salva no banco
+        $produto = $this->service->adicionarProduto(
+            $request->nome, 
+            (float) $preco,
+            $request->descricao,
+            $request->tipo,
+            $request->adicionais,
+            $imagePath
+        );
+        
+        // Redireciona o admin de volta para o painel com mensagem de sucesso
         if (!$request->wantsJson()) {
-            return redirect()->route('cardapio.index')->with('mensagem', 'Produto adicionado com sucesso!');
+            return redirect()->route('admin.produto.index')->with('mensagem', 'Produto adicionado com sucesso!');
         }
         return response()->json($produto);
     }

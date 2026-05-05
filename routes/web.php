@@ -54,6 +54,15 @@ Route::get('autorizacao/login', function () {
 
 Route::post('autorizacao/login', [ClienteController::class, 'login'])->name('cliente.login');
 
+// ── OAUTH2 SOCIAL LOGIN (Google & Facebook) ───────────────────────────────
+Route::get('/auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirectToProvider'])
+    ->name('auth.social.redirect');
+
+Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'handleProviderCallback'])
+    ->name('auth.social.callback');
+// ─────────────────────────────────────────────────────────────────────────
+
+
 Route::get('/cadastro', function () {
     return view('autorizacao.cadastro');
 })->name('register');
@@ -100,12 +109,21 @@ Route::post('/pedidos/finalizar', [PedidoController::class, 'salvarPedido'])->na
 
 
 // ROTAS PRODUTOS
+// ==========================================
+// ROTAS DE ADMINISTRAÇÃO (PAINEL)
+// ==========================================
+Route::get('/admin/login', [\App\Http\Controllers\Auth\AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [\App\Http\Controllers\Auth\AdminAuthController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout', [\App\Http\Controllers\Auth\AdminAuthController::class, 'logout'])->name('admin.logout');
 
-Route::get('/produto/novo', function () {
-    return view('produto_novo', ['produtos' => \App\Models\Produto::all()]);
-})->middleware(EnsureTokenIsValid::class)->name('produto.index');
+// ROTAS PRODUTOS (ADMIN)
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/produto/novo', function () {
+        return view('admin.produto-novo');
+    })->name('admin.produto.index');
 
-Route::post('/produto/novo',  [ProdutoController::class, 'salvarProduto'])->name('produto.salvar');
+    Route::post('/admin/produto/novo', [ProdutoController::class, 'salvarProduto'])->name('admin.produto.salvar');
+});
 
 Route::delete('/produto/{id}', [ProdutoController::class, 'deletarProduto'])->name('produto.deletar');
 

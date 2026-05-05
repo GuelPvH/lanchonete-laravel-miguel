@@ -15,6 +15,35 @@
                     </div>
                 @endif
 
+                {{-- ============================================
+                     BOTÕES DE LOGIN SOCIAL (Google & Facebook)
+                     ============================================ --}}
+                <div class="auth-social">
+                    <a href="{{ route('auth.social.redirect', 'google') }}"
+                       class="auth-btn-social auth-btn-google"
+                       id="btn-login-google">
+                        <span class="auth-social-badge google-badge">G</span>
+                        Entrar com Google
+                    </a>
+
+                    <a href="{{ route('auth.social.redirect', 'facebook') }}"
+                       class="auth-btn-social auth-btn-facebook"
+                       id="btn-login-facebook">
+                        <span class="auth-social-badge facebook-badge">f</span>
+                        Entrar com Facebook
+                    </a>
+                </div>
+
+                {{-- Divisor entre social login e formulário tradicional --}}
+                <div class="auth-divider">
+                    <span class="auth-divider-line"></span>
+                    <span class="auth-divider-text">ou entre com e-mail</span>
+                    <span class="auth-divider-line"></span>
+                </div>
+
+                {{-- ============================================
+                     FORMULÁRIO TRADICIONAL (E-MAIL + SENHA)
+                     ============================================ --}}
                 <form action="{{ route('cliente.login') }}" method="POST" class="auth-form">
                     @csrf
 
@@ -48,11 +77,17 @@
                     </a>
 
                     <div class="auth-form-actions">
-                        <button type="submit" class="btn auth-btn-yellow auth-btn-submit">
+                        <button type="submit" class="btn auth-btn-yellow auth-btn-submit" id="btn-login-submit">
                             ENTRAR
                         </button>
                     </div>
                 </form>
+
+                {{-- Link para cadastro --}}
+                <p class="auth-footer-text">
+                    Não tem uma conta?
+                    <a href="{{ route('register') }}" class="auth-link-small">Cadastre-se</a>
+                </p>
             </div>
         </div>
 
@@ -60,3 +95,4 @@
     </section>
 </div>
 @endsection
+
