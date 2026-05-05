@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Modules\Produto\ProdutoController;
 use App\Modules\Cliente\ClienteController;
 use App\Modules\Pedido\PedidoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
+use AWS\CRT\HTTP\Request;
 
 // ROTAS RELACIONADAS AO CLIENTE
 
@@ -152,3 +154,14 @@ Route::post('/nova-senha', [ClienteController::class, 'redefinirSenha'])->name('
 
 Route::delete('/clientes/{cliente}', [ClienteController::class, 'deletarCliente'])->name('cliente.deletar');
 Route::put('/clientes/{cliente}', [ClienteController::class, 'alterarCliente'])->name('cliente.alterar');
+
+Route::get('/clientes', function () {
+    return view('site/perfil', ['clientes' => \App\Models\Cliente::all()]);
+})->name('cliente.index');
+
+Route::get('/autorizacao/login', [AuthorController::class, 'index'])->name('autorizacao.login');
+Route::get('/autorizacao/cadastro', [AuthorController::class, 'cadastro'])->name('autorizacao.cadastro');
+Route::post('/autorizacao/login', [AuthorController::class, 'loginAttempt'])->name('autorizacao.login');
+
+
+
