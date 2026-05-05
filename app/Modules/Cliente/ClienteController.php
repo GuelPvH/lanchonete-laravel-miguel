@@ -24,23 +24,10 @@ class ClienteController extends Controller
             $request->senha
             );
         return redirect()->route('autorizacao.login');
-        
-        /* if (!$request->wantsJson()) {
-            session([
-                'cliente_id' => $cliente->id,
-                'nome_cliente' => $cliente->nome,
-                'sobrenome_cliente' => $request->sobrenome
-            ]);
-            return redirect()->route('cardapio.index')->with('mensagem', 'Bem-vindo, ' . $cliente->nome . '!');
-        } */
-        
-        //return response()->json($cliente);
-        //dd($request->all());
-        //$request->validated();
-        //return view('clientes');
     }
 
     public function login(Request $request) {
+        //dd($request->all());
         $cliente = Cliente::where('email', $request->email)->first();
 
         if (!$cliente || !password_verify($request->senha, $cliente->senha)) {

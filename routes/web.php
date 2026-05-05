@@ -11,14 +11,16 @@ use AWS\CRT\HTTP\Request;
 // ROTAS RELACIONADAS AO CLIENTE
 
 Route::get('/', function () {
-    return view('/site/bem-vindo');
-})->name('bemvindo.index');
+    return view('welcome');
+});
 
 Route::get('/cardapio', [App\Modules\Produto\ProdutoController::class, 'index'])->name('cardapio.index');
 
-Route::get('/pedido', function () {
-    return view('site/pedido', ['total' => session('carrinhoTotal', 0)]);
-})->name('pedido.ver');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 Route::post('/pagamento', [PedidoController::class, 'calcularTotal'])->name('pagamento.index');
 
